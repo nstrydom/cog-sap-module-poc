@@ -7,36 +7,37 @@
         TalentLab sends the completed reports and
         the AI-generated recommendation back through the integration layer to SAP with below data points.
       </p>
+      <div class="hero-title-line top-gap-sm">{{ demo.displayedResultsTitle }}</div>
     </div>
 
     <div class="hero-card">
       <span class="label">Recommendation</span>
-      <div class="recommendation-badge">{{ demo.finalRecommendation.status }}</div>
-      <p>{{ demo.finalRecommendation.readiness }} · {{ demo.finalRecommendation.risk }} risk</p>
+      <div class="recommendation-badge">{{ demo.displayedRecommendation.status }}</div>
+      <p>{{ demo.displayedRecommendation.readiness }} · {{ demo.displayedRecommendation.risk }} risk</p>
       <div class="candidate-selector top-gap-sm">
         <label class="selector-label" for="results-candidate-select">Requested individual</label>
         <select
           id="results-candidate-select"
           class="selector-input"
-          [ngModel]="demo.selectedCandidateKey"
-          (ngModelChange)="demo.setSelectedCandidate($event)"
+          [ngModel]="demo.selectedResultsViewKey"
+          (ngModelChange)="demo.setSelectedResultsView($event)"
         >
-          <option *ngFor="let option of demo.candidateOptions" [ngValue]="option.key">
+          <option *ngFor="let option of demo.resultsViewOptions" [ngValue]="option.key">
             {{ option.label }}
           </option>
         </select>
       </div>
       <div class="metric-strip">
         <div>
-          <strong>{{ demo.finalRecommendation.fit }}%</strong>
+          <strong>{{ demo.displayedRecommendation.fit }}%</strong>
           <span>Fit</span>
         </div>
         <div>
-          <strong>{{ demo.finalRecommendation.culture }}%</strong>
+          <strong>{{ demo.displayedRecommendation.culture }}%</strong>
           <span>Culture</span>
         </div>
         <div>
-          <strong>{{ demo.finalRecommendation.teamImpact }}</strong>
+          <strong>{{ demo.displayedRecommendation.teamImpact }}</strong>
           <span>Team</span>
         </div>
       </div>
@@ -46,8 +47,9 @@
   <div class="card-grid top-gap">
     <article class="card">
       <p class="section-kicker">Decision summary</p>
-      <h3>{{ demo.finalRecommendation.candidate }}</h3>
-      <p class="lede small">{{ demo.finalRecommendation.summary }}</p>
+      <h3>{{ demo.displayedRecommendation.candidate }}</h3>
+      <p class="muted">{{ demo.requestBase.vacancy }}</p>
+      <p class="lede small">{{ demo.displayedRecommendation.summary }}</p>
 
       <table class="results-table top-gap">
         <thead>
@@ -63,7 +65,7 @@
         <tbody>
           <tr
             *ngFor="let recommendation of demo.candidateRecommendations"
-            [class.results-row-active]="recommendation.candidate === demo.finalRecommendation.candidate"
+            [class.results-row-active]="recommendation.candidate === demo.displayedRecommendation.candidate"
           >
             <td>{{ recommendation.candidate }}</td>
             <td>{{ recommendation.fit }}%</td>
@@ -78,7 +80,7 @@
       <div class="report-link-list top-gap">
         <a
           class="report-link"
-          *ngFor="let document of demo.allReportLinks"
+          *ngFor="let document of demo.displayedAllReportLinks"
           [href]="document.path"
           target="_blank"
           rel="noopener noreferrer"
@@ -111,12 +113,13 @@
     </div>
 
     <div class="impact-grid top-gap">
-      <div class="impact-card" *ngFor="let item of demo.businessImpact">
+      <div class="impact-card" *ngFor="let item of demo.displayedBusinessImpact">
         <strong>{{ item.value }}</strong>
         <h4>{{ item.label }}</h4>
         <p>{{ item.detail }}</p>
       </div>
     </div>
+    <p class="financial-line top-gap-sm">{{ demo.selectedResultsProfile?.stackUpVerdict?.financialLine || demo.activeStackUpVerdict.financialLine }}</p>
   </article>
 
   <article class="card top-gap">
@@ -138,8 +141,8 @@
             {{ demo.getPillar(capability.pillarId)?.title }}
           </span>
           <h4>{{ capability.capability }}</h4>
-          <p>{{ capability.businessMeaning }}</p>
-          <small>{{ capability.signal }}</small>
+          <p>{{ capability.whatItIs }}</p>
+          <small>{{ capability.resultInterpretation }}</small>
           <div class="report-link-list top-gap-sm">
             <a
               class="report-link"

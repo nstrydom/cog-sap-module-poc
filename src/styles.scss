@@ -549,6 +549,13 @@ small {
   line-height: 1.5;
 }
 
+.framework-list {
+  margin: 0.45rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
 .framework-label {
   display: inline-flex;
   font-size: 0.74rem;
@@ -583,8 +590,19 @@ small {
   background: linear-gradient(180deg, rgba(180, 69, 95, 0.09), rgba(255, 255, 255, 0.72));
 }
 
+.capability-watch {
+  border: 1px solid rgba(215, 162, 51, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(215, 162, 51, 0.08);
+}
+
+.capability-good {
+  border: 1px solid rgba(108, 160, 110, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(108, 160, 110, 0.08);
+}
+
 .alert-pill,
-.pillar-pill {
+.pillar-pill,
+.good-pill {
   display: inline-flex;
   width: fit-content;
   padding: 0.35rem 0.7rem;
@@ -596,6 +614,12 @@ small {
 .alert-pill {
   color: #a43351;
   background: rgba(180, 69, 95, 0.14);
+  margin-bottom: 0.65rem;
+}
+
+.good-pill {
+  color: #366438;
+  background: rgba(108, 160, 110, 0.16);
   margin-bottom: 0.65rem;
 }
 
@@ -662,6 +686,14 @@ small {
   font-size: 1.4rem;
   font-weight: 900;
   letter-spacing: 0.04em;
+}
+
+.hero-title-line {
+  display: inline-flex;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(32, 49, 60, 0.08);
+  font-weight: 800;
 }
 
 .results-table {
@@ -758,6 +790,57 @@ small {
   line-height: 1.5;
 }
 
+.verdict-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.verdict-card {
+  padding: 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.verdict-card strong,
+.overall-verdict strong {
+  display: block;
+  margin-bottom: 0.45rem;
+}
+
+.verdict-card p,
+.overall-verdict p {
+  margin: 0;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.verdict-design {
+  background: linear-gradient(180deg, rgba(74, 143, 216, 0.1), rgba(255, 255, 255, 0.8));
+}
+
+.verdict-fill {
+  background: linear-gradient(180deg, rgba(92, 170, 112, 0.1), rgba(255, 255, 255, 0.8));
+}
+
+.verdict-develop {
+  background: linear-gradient(180deg, rgba(123, 97, 196, 0.1), rgba(255, 255, 255, 0.8));
+}
+
+.overall-verdict {
+  padding: 1rem 1.1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(42, 63, 212, 0.18);
+  background: linear-gradient(145deg, rgba(42, 63, 212, 0.08), rgba(255, 255, 255, 0.9));
+}
+
+.financial-line {
+  margin: 0;
+  font-weight: 700;
+  color: #24404f;
+}
+
 .enterprise-table-wrap {
   overflow-x: auto;
 }
@@ -838,6 +921,7 @@ small {
   .solution-grid,
   .capability-grid,
   .impact-grid,
+  .verdict-grid,
   .pillar-capability-grid,
   .pillar-framework-grid,
   .candidate-overview-grid {

@@ -29,15 +29,15 @@ export interface SolutionPillar {
   individualImpact: string;
   teamImpact: string;
   organisationImpact: string;
-  sapLinkage: string;
+  sapLinkage: string[];
 }
 
 export interface CapabilityScore {
   capability: string;
   pillarId: PillarId;
   score: number;
-  signal: string;
-  businessMeaning: string;
+  whatItIs: string;
+  resultInterpretation: string;
   mappedReports: string[];
 }
 
@@ -87,6 +87,11 @@ export interface CandidateOption {
   label: string;
 }
 
+export interface ResultsViewOption {
+  key: string;
+  label: string;
+}
+
 export interface FinalRecommendation {
   candidate: string;
   fit: number;
@@ -108,6 +113,13 @@ export interface CandidateProfile {
   timeline: TimelineEvent[];
   businessImpact: BusinessImpactMetric[];
   finalRecommendation: FinalRecommendation;
+  stackUpVerdict: {
+    designRight: string;
+    fillRight: string;
+    developRight: string;
+    overall: string;
+    financialLine: string;
+  };
 }
 
 @Injectable({
@@ -127,7 +139,10 @@ export class DemoStateService {
       individualImpact: 'Defines what the role requires before assessment, ensuring individual fit is anchored in role reality.',
       teamImpact: 'Ensures new roles are designed with a structurally sound team architecture.',
       organisationImpact: 'Guarantees defensible reward by tying pay to capability and protecting against pay-equity variance.',
-      sapLinkage: 'SAP Compensation and reward scaffold with capability-linked band placement and STI/LTI guardrails.'
+      sapLinkage: [
+        'SAP Compensation',
+        'Reward Scaffold (capability-linked band placement, STI/LTI guardrails)'
+      ]
     },
     {
       id: 'fill-right',
@@ -139,7 +154,11 @@ export class DemoStateService {
       individualImpact: 'Provides fit confidence for candidate placement and internal moves.',
       teamImpact: 'Instantly flags fragility alerts when an individual score drops below a pre-set threshold.',
       organisationImpact: 'Delivers better slates that hold and reduces mis-hire probability from ~50% to <17%.',
-      sapLinkage: 'SAP Recruiting and Succession with decision summary outputs and AI summarisation returned to SAP.'
+      sapLinkage: [
+        'SAP Recruiting',
+        'SAP Succession (Decision Summary with Fit/Culture/Risk)',
+        'AI Summarization Pipeline (returns results to SAP)'
+      ]
     },
     {
       id: 'develop-right',
@@ -151,7 +170,11 @@ export class DemoStateService {
       individualImpact: 'Clarifies potential and readiness for promotion and future roles by analysing cognitive depth.',
       teamImpact: 'Populates succession slate builders with confidence-rated slates and domino backfill suggestions.',
       organisationImpact: 'Enables the SAP HCM++ view with enterprise KPIs and seven-dimensional organisational heatmaps.',
-      sapLinkage: 'SAP Performance, Succession, and Analytics with bench-strength indices and a talent intelligence hub.'
+      sapLinkage: [
+        'SAP Performance',
+        'SAP Succession',
+        'SAP Analytics (Bench-strength indices, Mobility Heatmap, Talent Intelligence Hub)'
+      ]
     }
   ];
 
@@ -249,15 +272,15 @@ export class DemoStateService {
         }
       ],
       capabilities: [
-        { capability: 'Role Intelligence', pillarId: 'design-right', score: 91, signal: 'Role architecture and decision span suit current experience.', businessMeaning: 'Defines what the role actually demands before anyone is assessed.', mappedReports: ['CCM', 'CPP'] },
-        { capability: 'Team Architecture', pillarId: 'design-right', score: 84, signal: 'Likely to stabilise team cadence and coach junior HR partners.', businessMeaning: 'Shows how this person will influence the rhythm, stability, and shape of the team.', mappedReports: ['CPP', 'MP'] },
-        { capability: 'Reward Intelligence', pillarId: 'design-right', score: 81, signal: 'Recognition, purpose, and autonomy will outperform pure cash incentives.', businessMeaning: 'Clarifies what reward mix will sustain performance once the candidate is in role.', mappedReports: ['VO', 'MP'] },
-        { capability: 'Fit Confidence', pillarId: 'fill-right', score: 88, signal: 'Strong overall fit with the HR manager vacancy.', businessMeaning: 'Estimates how strongly the candidate matches the practical demands of the role.', mappedReports: ['CCM', 'VO'] },
-        { capability: 'Culture Visibility', pillarId: 'fill-right', score: 86, signal: 'Values align well with a people-first, high-trust culture.', businessMeaning: 'Translates values and motivation into likely culture alignment on entry.', mappedReports: ['VO', 'MP'] },
-        { capability: 'Fragility Detection', pillarId: 'fill-right', score: 24, signal: 'Low derailment risk overall, but workload stretch risk needs close monitoring during peak hiring cycles.', businessMeaning: 'Flags the points where a placement could become fragile or costly if ignored.', mappedReports: ['CPP', 'MP'] },
-        { capability: 'Performance Prediction', pillarId: 'develop-right', score: 90, signal: 'Expected to ramp quickly and manage broad HR stakeholder demands.', businessMeaning: 'Forecasts how effectively the candidate is likely to execute in the real environment.', mappedReports: ['CPP', 'CCM'] },
-        { capability: 'Potential & Readiness', pillarId: 'develop-right', score: 89, signal: 'Ready now for the role with medium-term stretch toward senior people leadership.', businessMeaning: 'Shows whether this is a ready-now placement or a future-bet investment.', mappedReports: ['CPP', 'VO'] },
-        { capability: 'Enterprise Intelligence', pillarId: 'develop-right', score: 85, signal: 'Comfortable linking people decisions to broader business outcomes.', businessMeaning: 'Reveals whether the candidate can think beyond role fit and contribute at enterprise level.', mappedReports: ['CPP', 'CCM', 'VO'] }
+        { capability: 'Role Intelligence', pillarId: 'design-right', score: 91, whatItIs: 'Defines what the role actually demands — complexity, pressure, decision rights — before anyone is assessed.', resultInterpretation: 'Role architecture and decision span are a strong match to this candidate\'s current operating level and experience. The role is well-defined and the candidate\'s cognitive complexity aligns to its demands.', mappedReports: ['CCM', 'CPP'] },
+        { capability: 'Team Architecture', pillarId: 'design-right', score: 84, whatItIs: 'Measures whether the candidate strengthens or weakens the team they\'re joining.', resultInterpretation: 'Likely to stabilise team cadence and provide complementary leadership to existing team members. Adds execution discipline the team currently lacks. No significant friction indicators.', mappedReports: ['CPP', 'MP'] },
+        { capability: 'Reward Intelligence', pillarId: 'design-right', score: 81, whatItIs: 'Links the candidate\'s capability profile to appropriate reward architecture for sustainable performance.', resultInterpretation: 'Capability profile supports senior leadership reward band. Motivation drivers align well with long-term incentive structures — recognition, purpose, and autonomy will sustain engagement more effectively than pure cash incentives.', mappedReports: ['VO', 'MP'] },
+        { capability: 'Fit Confidence', pillarId: 'fill-right', score: 88, whatItIs: 'Measures real cognitive capability, values alignment, and motivational fit — not self-reported skills.', resultInterpretation: 'Strong overall fit with the role. Cognitive complexity match shows headroom above role requirements. Values align with the target culture. Motivational profile supports the operating pace and stakeholder complexity of the role.', mappedReports: ['CCM', 'VO'] },
+        { capability: 'Culture Visibility', pillarId: 'fill-right', score: 86, whatItIs: 'Measures whether the candidate\'s values and worldview align with the organisation\'s target culture.', resultInterpretation: 'Values align well with a people-first, high-trust culture orientation. Strong on collaboration and stewardship. Minor gap in competitive intensity — manageable in a results-oriented environment with supportive leadership.', mappedReports: ['VO', 'MP'] },
+        { capability: 'Fragility & Risk Detection', pillarId: 'fill-right', score: 24, whatItIs: 'Identifies risk of performance breakdown under the specific pressure conditions of this role.', resultInterpretation: 'LOW RISK — Low derailment probability. Monitor workload stretch during peak hiring seasons as the candidate\'s resilience, while adequate, shows some sensitivity to sustained ambiguity without structured milestones. Proactive check-ins recommended in first 6 months.', mappedReports: ['CPP', 'MP'] },
+        { capability: 'Performance Prediction', pillarId: 'develop-right', score: 90, whatItIs: 'Forecasts whether this person will deliver sustained performance — not a review of past activity.', resultInterpretation: 'Expected to ramp quickly and manage broad stakeholder demands effectively. Cognitive-role complexity match is strong with headroom. Execution style aligns with the role\'s operating cadence. Predicted trajectory: stable-to-improving over first 12 months.', mappedReports: ['CPP', 'CCM'] },
+        { capability: 'Potential & Readiness', pillarId: 'develop-right', score: 89, whatItIs: 'Measures whether this person has capacity to grow beyond this role — or has reached their cognitive ceiling.', resultInterpretation: 'Ready now for the role with medium-term stretch toward senior executive leadership. Cognitive capacity shows room for one more complexity level. Learning agility supports accelerated development. Not at potential ceiling — this is a growth hire, not a terminal placement.', mappedReports: ['CPP', 'VO'] },
+        { capability: 'Enterprise Intelligence', pillarId: 'develop-right', score: 85, whatItIs: 'Shows how this placement decision connects to broader organisational capability and strategic readiness.', resultInterpretation: 'This placement strengthens the Operations business unit\'s integrated readiness score and addresses a gap in execution leadership density. Comfortable linking people decisions to broader business outcomes. Contributes positively to the enterprise confidence index.', mappedReports: ['CPP', 'CCM', 'VO'] }
       ],
       timeline: [
         { title: 'SAP request created', time: '2026-03-27 08:55', detail: 'Recruiting workflow triggered TalentLab bundle selection from requisition metadata.' },
@@ -280,6 +303,13 @@ export class DemoStateService {
         status: 'Recommend',
         confidenceModel: '83% confidence model',
         summary: 'Elmien Toerien demonstrates strong role fit for the HR Manager vacancy. The completed Cognadev assessment bundle indicates above-benchmark reasoning, people stewardship, and a low behavioural risk profile, with especially strong evidence in role intelligence and performance prediction.'
+      },
+      stackUpVerdict: {
+        designRight: 'Design right: Role is well-defined and matched to this candidate\'s complexity level (91% role intelligence).',
+        fillRight: 'Fill right: Strong fit with manageable risk — recommend placement (88% fit, 24% fragility).',
+        developRight: 'Develop right: Growth hire with headroom — not at ceiling, will develop further (89% readiness, 90% performance prediction).',
+        overall: 'Recommend: High confidence for sustained performance and future development potential.',
+        financialLine: 'Estimated value of this decision: Placing this candidate with 88% fit confidence reduces mis-hire probability from ~50% (industry average) to <17%. Estimated cost avoided: $1.5M-$3.5M.'
       }
     },
     {
@@ -354,15 +384,15 @@ export class DemoStateService {
         }
       ],
       capabilities: [
-        { capability: 'Role Intelligence', pillarId: 'design-right', score: 72, signal: 'Candidate understands the shape of the role, but not yet at the same strategic depth as the top-fit profile.', businessMeaning: 'Defines what the role actually demands before anyone is assessed.', mappedReports: ['CCM', 'CPP'] },
-        { capability: 'Team Architecture', pillarId: 'design-right', score: 66, signal: 'Would contribute operationally, though less likely to reshape team cadence or coach others immediately.', businessMeaning: 'Shows how this person will influence the rhythm, stability, and shape of the team.', mappedReports: ['CPP', 'MP'] },
-        { capability: 'Reward Intelligence', pillarId: 'design-right', score: 70, signal: 'A clearer performance framework and tangible incentives will matter more for sustained engagement.', businessMeaning: 'Clarifies what reward mix will sustain performance once the candidate is in role.', mappedReports: ['VO', 'MP'] },
-        { capability: 'Fit Confidence', pillarId: 'fill-right', score: 67, signal: 'Fit is credible but not definitive for the full HR manager brief.', businessMeaning: 'Estimates how strongly the candidate matches the practical demands of the role.', mappedReports: ['CCM', 'VO'] },
-        { capability: 'Culture Visibility', pillarId: 'fill-right', score: 74, signal: 'Likely to adapt, though not as naturally aligned to the current culture as the lead candidate.', businessMeaning: 'Translates values and motivation into likely culture alignment on entry.', mappedReports: ['VO', 'MP'] },
-        { capability: 'Fragility Detection', pillarId: 'fill-right', score: 39, signal: 'The model flags a fragility alert around resilience under sustained stakeholder load.', businessMeaning: 'Flags the points where a placement could become fragile or costly if ignored.', mappedReports: ['CPP', 'MP'] },
-        { capability: 'Performance Prediction', pillarId: 'develop-right', score: 69, signal: 'Expected performance is moderate, with more onboarding and scope-shaping needed.', businessMeaning: 'Forecasts how effectively the candidate is likely to execute in the real environment.', mappedReports: ['CPP', 'CCM'] },
-        { capability: 'Potential & Readiness', pillarId: 'develop-right', score: 64, signal: 'Shows potential, but reads more as develop-into-role than ready-now.', businessMeaning: 'Shows whether this is a ready-now placement or a future-bet investment.', mappedReports: ['CPP', 'VO'] },
-        { capability: 'Enterprise Intelligence', pillarId: 'develop-right', score: 61, signal: 'More role-bounded than enterprise-oriented in current form.', businessMeaning: 'Reveals whether the candidate can think beyond role fit and contribute at enterprise level.', mappedReports: ['CPP', 'CCM', 'VO'] }
+        { capability: 'Role Intelligence', pillarId: 'design-right', score: 72, whatItIs: 'Defines what the role actually demands — complexity, pressure, decision rights — before anyone is assessed.', resultInterpretation: 'Role architecture is reasonably clear, but the candidate\'s current operating level is slightly below the full complexity of this HR Manager brief.', mappedReports: ['CCM', 'CPP'] },
+        { capability: 'Team Architecture', pillarId: 'design-right', score: 66, whatItIs: 'Measures whether the candidate strengthens or weakens the team they\'re joining.', resultInterpretation: 'Would contribute operationally, though less likely to reshape team cadence or coach others immediately. Team contribution is positive but not strongly additive.', mappedReports: ['CPP', 'MP'] },
+        { capability: 'Reward Intelligence', pillarId: 'design-right', score: 70, whatItIs: 'Links the candidate\'s capability profile to appropriate reward architecture for sustainable performance.', resultInterpretation: 'A clearer performance framework and tangible incentives will matter more for sustained engagement than broad executive-style autonomy.', mappedReports: ['VO', 'MP'] },
+        { capability: 'Fit Confidence', pillarId: 'fill-right', score: 67, whatItIs: 'Measures real cognitive capability, values alignment, and motivational fit — not self-reported skills.', resultInterpretation: 'Fit is credible but not definitive for the full HR Manager brief. The candidate may perform better in a narrower operational role than in the full stakeholder scope of this placement.', mappedReports: ['CCM', 'VO'] },
+        { capability: 'Culture Visibility', pillarId: 'fill-right', score: 74, whatItIs: 'Measures whether the candidate\'s values and worldview align with the organisation\'s target culture.', resultInterpretation: 'Likely to adapt, though not as naturally aligned to the current culture as the lead candidate. This can work with strong onboarding and supportive leadership.', mappedReports: ['VO', 'MP'] },
+        { capability: 'Fragility & Risk Detection', pillarId: 'fill-right', score: 39, whatItIs: 'Identifies risk of performance breakdown under the specific pressure conditions of this role.', resultInterpretation: 'LOW TO MODERATE RISK — Fragility remains manageable, but resilience under sustained stakeholder load should be monitored more closely than for the lead candidate.', mappedReports: ['CPP', 'MP'] },
+        { capability: 'Performance Prediction', pillarId: 'develop-right', score: 69, whatItIs: 'Forecasts whether this person will deliver sustained performance — not a review of past activity.', resultInterpretation: 'Expected performance is moderate, with more onboarding, scope-shaping, and performance support needed in the first 12 months.', mappedReports: ['CPP', 'CCM'] },
+        { capability: 'Potential & Readiness', pillarId: 'develop-right', score: 64, whatItIs: 'Measures whether this person has capacity to grow beyond this role — or has reached their cognitive ceiling.', resultInterpretation: 'Shows potential, but reads more as develop-into-role than ready-now. Growth is possible, though likely at a slower pace and with more structure.', mappedReports: ['CPP', 'VO'] },
+        { capability: 'Enterprise Intelligence', pillarId: 'develop-right', score: 61, whatItIs: 'Shows how this placement decision connects to broader organisational capability and strategic readiness.', resultInterpretation: 'Contribution is more role-bounded than enterprise-shaping at present. Positive for team delivery, but less likely to move wider organisational readiness in the short term.', mappedReports: ['CPP', 'CCM', 'VO'] }
       ],
       timeline: [
         { title: 'SAP request created', time: '2026-03-27 09:48', detail: 'Recruiting workflow triggered TalentLab bundle selection from requisition metadata.' },
@@ -385,6 +415,13 @@ export class DemoStateService {
         status: 'Conditional',
         confidenceModel: '68% confidence model',
         summary: 'Jane Doe presents a plausible but conditional fit for the HR Manager vacancy. The TalentLab bundle suggests she could succeed with tighter scope definition, structured support, and development investment, but the current evidence does not support as strong a placement recommendation as the lead candidate.'
+      },
+      stackUpVerdict: {
+        designRight: 'Design right: Role is reasonably defined, but the candidate is a partial complexity match for the full brief.',
+        fillRight: 'Fill right: Moderate fit with manageable but more visible risk — proceed only with support and scope clarity.',
+        developRight: 'Develop right: Develop-into-role profile with some headroom, but not as strong a growth signal as the lead candidate.',
+        overall: 'Conditional: Viable with support, but lower confidence for sustained performance than the lead candidate.',
+        financialLine: 'Estimated value of this decision: Placing this candidate with 67% fit confidence improves the decision over an uninformed hire, but preserves less value than the lead candidate because additional support and risk management will be required.'
       }
     }
   ];
@@ -447,6 +484,7 @@ export class DemoStateService {
   ];
 
   selectedCandidateKey = 'elmien-toerien';
+  selectedResultsViewKey = 'elmien-toerien';
 
   isSubmitting = false;
   isSubmitted = false;
@@ -460,6 +498,13 @@ export class DemoStateService {
 
   get candidateRecommendations(): FinalRecommendation[] {
     return this.candidateProfiles.map((profile) => profile.finalRecommendation);
+  }
+
+  get resultsViewOptions(): ResultsViewOption[] {
+    return [
+      ...this.candidateOptions,
+      { key: 'team-overview', label: 'Team Overview' }
+    ];
   }
 
   get activeCandidate(): CandidateProfile {
@@ -501,14 +546,73 @@ export class DemoStateService {
     return this.activeCandidate.finalRecommendation;
   }
 
+  get selectedResultsProfile(): CandidateProfile | null {
+    if (this.selectedResultsViewKey === 'team-overview') {
+      return null;
+    }
+
+    return this.candidateProfiles.find((profile) => profile.key === this.selectedResultsViewKey) ?? this.activeCandidate;
+  }
+
+  get aggregateRecommendation(): FinalRecommendation {
+    const recommendations = this.candidateRecommendations;
+    const avgFit = Math.round(recommendations.reduce((sum, item) => sum + item.fit, 0) / recommendations.length);
+    const avgCulture = Math.round(recommendations.reduce((sum, item) => sum + item.culture, 0) / recommendations.length);
+
+    return {
+      candidate: 'Team Overview',
+      fit: avgFit,
+      culture: avgCulture,
+      risk: 'Mixed',
+      teamImpact: '+8%',
+      readiness: 'Portfolio view',
+      status: 'Compare',
+      confidenceModel: 'Portfolio comparison',
+      summary: 'This requisition contains one high-confidence recommend profile and one conditional profile. The comparison makes the decision trade-off visible at a glance for hiring managers and Exco reviewers.'
+    };
+  }
+
+  get displayedRecommendation(): FinalRecommendation {
+    return this.selectedResultsProfile?.finalRecommendation ?? this.aggregateRecommendation;
+  }
+
+  get displayedResultsTitle(): string {
+    return `${this.displayedRecommendation.candidate} -> ${this.requestBase.vacancy}`;
+  }
+
+  get displayedBusinessImpact(): BusinessImpactMetric[] {
+    return this.selectedResultsProfile?.businessImpact ?? [
+      { value: '2', label: 'Candidates compared', detail: 'One recommend profile and one conditional profile are currently attached to this requisition.' },
+      { value: '88% vs 67%', label: 'Fit spread', detail: 'The lead candidate outperforms the secondary candidate materially on fit confidence.' },
+      { value: '$1.5M-$3.5M', label: 'Top-end value preserved', detail: 'The lead recommendation carries the highest value preservation estimate for this requisition.' }
+    ];
+  }
+
+  get displayedAllReportLinks(): ReportLink[] {
+    return this.selectedResultsProfile?.assessments.flatMap((assessment) => assessment.documents) ?? this.candidateProfiles.flatMap((profile) => profile.assessments.flatMap((assessment) => assessment.documents));
+  }
+
+  get activeStackUpVerdict() {
+    return this.activeCandidate.stackUpVerdict;
+  }
+
   setSelectedCandidate(candidateKey: string): void {
     if (this.selectedCandidateKey === candidateKey) {
       return;
     }
 
     this.selectedCandidateKey = candidateKey;
+    this.selectedResultsViewKey = candidateKey;
     this.isSubmitting = false;
     this.isSubmitted = false;
+  }
+
+  setSelectedResultsView(resultsViewKey: string): void {
+    this.selectedResultsViewKey = resultsViewKey;
+
+    if (resultsViewKey !== 'team-overview') {
+      this.selectedCandidateKey = resultsViewKey;
+    }
   }
 
   getCapabilitiesByPillar(pillarId: PillarId): CapabilityScore[] {
@@ -533,7 +637,27 @@ export class DemoStateService {
   }
 
   isAlertCapability(score: number): boolean {
-    return score < 40;
+    return score >= 60;
+  }
+
+  isFragilityCapability(capability: CapabilityScore): boolean {
+    return capability.capability.includes('Fragility');
+  }
+
+  getCapabilityCardClass(capability: CapabilityScore): string {
+    if (!this.isFragilityCapability(capability)) {
+      return '';
+    }
+
+    if (capability.score >= 60) {
+      return 'capability-alert';
+    }
+
+    if (capability.score >= 40) {
+      return 'capability-watch';
+    }
+
+    return 'capability-good';
   }
 
   getHeatClass(score: number): string {

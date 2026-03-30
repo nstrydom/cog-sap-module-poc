@@ -66,7 +66,9 @@
           </div>
           <div class="framework-card framework-card-wide">
             <span class="framework-label">SAP / HCM linkage</span>
-            <p>{{ pillar.sapLinkage }}</p>
+            <ul class="framework-list">
+              <li *ngFor="let item of pillar.sapLinkage">{{ item }}</li>
+            </ul>
           </div>
         </div>
       </section>

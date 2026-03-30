@@ -170,7 +170,9 @@
           </div>
           <div class="framework-card framework-card-wide">
             <span class="framework-label">SAP / HCM linkage</span>
-            <p>{{ pillar.sapLinkage }}</p>
+            <ul class="framework-list">
+              <li *ngFor="let item of pillar.sapLinkage">{{ item }}</li>
+            </ul>
           </div>
         </div>
 
@@ -178,15 +180,16 @@
           <div
             class="capability-card"
             *ngFor="let capability of demo.getCapabilitiesByPillar(pillar.id)"
-            [class.capability-alert]="demo.isAlertCapability(capability.score)"
+            [ngClass]="[pillar.colorClass, demo.getCapabilityCardClass(capability)]"
           >
             <div class="capability-top">
               <h4>{{ capability.capability }}</h4>
               <strong>{{ capability.score }}<span>%</span></strong>
             </div>
-            <span class="alert-pill" *ngIf="demo.isAlertCapability(capability.score)">Risk alert</span>
-            <p>{{ capability.businessMeaning }}</p>
-            <small>{{ capability.signal }}</small>
+            <span class="alert-pill" *ngIf="demo.isFragilityCapability(capability) && demo.isAlertCapability(capability.score)">Red alert</span>
+            <span class="good-pill" *ngIf="demo.isFragilityCapability(capability) && !demo.isAlertCapability(capability.score)">Low risk</span>
+            <p><strong>What it is:</strong> {{ capability.whatItIs }}</p>
+            <small><strong>What the result says:</strong> {{ capability.resultInterpretation }}</small>
             <small class="report-code-line">Report codes: {{ capability.mappedReports.join(', ') }}</small>
             <div class="report-link-list top-gap-sm">
               <a
@@ -202,6 +205,35 @@
           </div>
         </div>
       </section>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Stack-up verdict</p>
+        <h3>Design right, fill right, develop right in one glance</h3>
+      </div>
+    </div>
+
+    <div class="verdict-grid top-gap">
+      <div class="verdict-card verdict-design">
+        <strong>Design right</strong>
+        <p>{{ demo.activeStackUpVerdict.designRight }}</p>
+      </div>
+      <div class="verdict-card verdict-fill">
+        <strong>Fill right</strong>
+        <p>{{ demo.activeStackUpVerdict.fillRight }}</p>
+      </div>
+      <div class="verdict-card verdict-develop">
+        <strong>Develop right</strong>
+        <p>{{ demo.activeStackUpVerdict.developRight }}</p>
+      </div>
+    </div>
+
+    <div class="overall-verdict top-gap">
+      <strong>{{ demo.activeStackUpVerdict.overall }}</strong>
+      <p>{{ demo.activeStackUpVerdict.financialLine }}</p>
     </div>
   </article>
 
