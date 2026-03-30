@@ -1,0 +1,227 @@
+<section class="page">
+  <div class="hero split-panel">
+    <div>
+      <p class="eyebrow">Step 2</p>
+      <h2>TalentLab workflow summary</h2>
+      <p class="lede">
+        SAP request into TalentLab: Assessment Completed, below evidence package that will be submitted for AI summarisation.
+      </p>
+    </div>
+
+    <div class="hero-card">
+      <span class="label">Candidate in progress</span>
+      <h3>{{ demo.request.candidate }}</h3>
+      <p>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</p>
+      <div class="candidate-selector top-gap-sm">
+        <label class="selector-label" for="summary-candidate-select">Requested individual</label>
+        <select
+          id="summary-candidate-select"
+          class="selector-input"
+          [ngModel]="demo.selectedCandidateKey"
+          (ngModelChange)="demo.setSelectedCandidate($event)"
+        >
+          <option *ngFor="let option of demo.candidateOptions" [ngValue]="option.key">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+      <div class="status-pill">{{ demo.isSubmitted ? 'Submitted back to SAP' : 'Ready to submit' }}</div>
+    </div>
+  </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Requested individuals</p>
+        <h3>Two candidates attached to this requisition</h3>
+      </div>
+      <p class="muted">Switching the selected individual updates the TalentLab evidence and downstream SAP result.</p>
+    </div>
+
+    <div class="candidate-overview-grid top-gap">
+      <div
+        class="candidate-overview-card"
+        *ngFor="let option of demo.candidateOptions"
+        [class.active]="option.key === demo.selectedCandidateKey"
+      >
+        <strong>{{ option.label }}</strong>
+        <span>{{ option.key === demo.selectedCandidateKey ? 'Selected for review' : 'Available in this request' }}</span>
+      </div>
+    </div>
+  </article>
+
+  <section class="workflow-steps top-gap">
+    <article class="step-card done">
+      <span>01</span>
+      <h3>Purpose selected</h3>
+      <p>{{ demo.request.purpose }}</p>
+    </article>
+    <article class="step-card done">
+      <span>02</span>
+      <h3>Assessments bundled</h3>
+      <p>CPP, VO, MP, PRP, and CCM selected from the TalentLab solution flow.</p>
+    </article>
+    <article class="step-card done">
+      <span>03</span>
+      <h3>Reports completed</h3>
+      <p>All report outputs received with timestamps and confidence signals.</p>
+    </article>
+    <article class="step-card active">
+      <span>04</span>
+      <h3>AI submission</h3>
+      <p>Send the report package into the summarisation endpoint for SAP-ready output.</p>
+    </article>
+  </section>
+
+  <div class="card-grid top-gap">
+    <article class="card">
+      <p class="section-kicker">Selected assessments</p>
+      <div class="assessment-grid">
+        <div class="assessment-card" *ngFor="let assessment of demo.assessments">
+          <div class="assessment-head">
+            <strong>{{ assessment.code }}</strong>
+            <span>{{ assessment.score }}%</span>
+          </div>
+          <h3>{{ assessment.name }}</h3>
+          <p>{{ assessment.insight }}</p>
+          <div class="report-links">
+            <a
+              class="report-link"
+              *ngFor="let document of assessment.documents"
+              [href]="document.path"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open {{ document.label }}
+            </a>
+          </div>
+          <small>{{ assessment.completedAt }} · {{ assessment.status }}</small>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <p class="section-kicker">AI intelligence engine</p>
+      <div class="prompt-box">
+        <p>{{ demo.aiPrompt }}</p>
+      </div>
+      <div class="chip-row top-gap-sm">
+        <span class="chip chip-blue" *ngFor="let assessment of demo.assessments">{{ assessment.report }}</span>
+      </div>
+      <div class="report-link-list top-gap-sm">
+        <a
+          class="report-link"
+          *ngFor="let document of demo.allReportLinks"
+          [href]="document.path"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ document.label }}
+        </a>
+      </div>
+      <div class="button-row top-gap">
+        <button class="btn btn-secondary" routerLink="/sap-request">Back to SAP request</button>
+        <button class="btn btn-primary" [disabled]="demo.isSubmitting" (click)="submit()">
+          {{ demo.isSubmitting ? 'Submitting to summary service...' : 'Submit or auto-submit result' }}
+        </button>
+      </div>
+    </article>
+  </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Three solution pillars</p>
+        <h3>Design right, fill right, develop right</h3>
+      </div>
+      <p class="muted">Nine capabilities grouped into three sellable solution pillars for the GE story.</p>
+    </div>
+
+    <div class="pillar-grid">
+      <section
+        class="pillar-section"
+        *ngFor="let pillar of demo.pillars"
+        [ngClass]="pillar.colorClass"
+      >
+        <div class="pillar-header">
+          <div>
+            <p class="section-kicker">{{ pillar.shortLabel }}</p>
+            <h3>{{ pillar.title }}</h3>
+          </div>
+          <p class="muted">{{ pillar.summary }}</p>
+        </div>
+
+        <div class="pillar-framework-grid">
+          <div class="framework-card">
+            <span class="framework-label">Capabilities</span>
+            <p>{{ pillar.capabilities.join(', ') }}</p>
+          </div>
+          <div class="framework-card">
+            <span class="framework-label">Individual success</span>
+            <p>{{ pillar.individualImpact }}</p>
+          </div>
+          <div class="framework-card">
+            <span class="framework-label">Team success</span>
+            <p>{{ pillar.teamImpact }}</p>
+          </div>
+          <div class="framework-card">
+            <span class="framework-label">Organisational success</span>
+            <p>{{ pillar.organisationImpact }}</p>
+          </div>
+          <div class="framework-card framework-card-wide">
+            <span class="framework-label">SAP / HCM linkage</span>
+            <p>{{ pillar.sapLinkage }}</p>
+          </div>
+        </div>
+
+        <div class="capability-grid pillar-capability-grid">
+          <div
+            class="capability-card"
+            *ngFor="let capability of demo.getCapabilitiesByPillar(pillar.id)"
+            [class.capability-alert]="demo.isAlertCapability(capability.score)"
+          >
+            <div class="capability-top">
+              <h4>{{ capability.capability }}</h4>
+              <strong>{{ capability.score }}<span>%</span></strong>
+            </div>
+            <span class="alert-pill" *ngIf="demo.isAlertCapability(capability.score)">Risk alert</span>
+            <p>{{ capability.businessMeaning }}</p>
+            <small>{{ capability.signal }}</small>
+            <small class="report-code-line">Report codes: {{ capability.mappedReports.join(', ') }}</small>
+            <div class="report-link-list top-gap-sm">
+              <a
+                class="report-link"
+                *ngFor="let document of demo.getReportsForCapability(capability.mappedReports)"
+                [href]="document.path"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ document.code }} PDF
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Workflow timeline</p>
+        <h3>Assessment completion narrative</h3>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let item of demo.timeline">
+        <span class="timeline-dot"></span>
+        <div>
+          <h4>{{ item.title }}</h4>
+          <small>{{ item.time }}</small>
+          <p>{{ item.detail }}</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>

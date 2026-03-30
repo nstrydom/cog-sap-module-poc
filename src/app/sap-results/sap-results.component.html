@@ -1,0 +1,182 @@
+<section class="page">
+  <div class="hero split-panel">
+    <div>
+      <p class="eyebrow">Step 3</p>
+      <h2>SAP module PASS-ON</h2>
+      <p class="lede">
+        TalentLab sends the completed reports and
+        the AI-generated recommendation back through the integration layer to SAP with below data points.
+      </p>
+    </div>
+
+    <div class="hero-card">
+      <span class="label">Recommendation</span>
+      <div class="recommendation-badge">{{ demo.finalRecommendation.status }}</div>
+      <p>{{ demo.finalRecommendation.readiness }} · {{ demo.finalRecommendation.risk }} risk</p>
+      <div class="candidate-selector top-gap-sm">
+        <label class="selector-label" for="results-candidate-select">Requested individual</label>
+        <select
+          id="results-candidate-select"
+          class="selector-input"
+          [ngModel]="demo.selectedCandidateKey"
+          (ngModelChange)="demo.setSelectedCandidate($event)"
+        >
+          <option *ngFor="let option of demo.candidateOptions" [ngValue]="option.key">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+      <div class="metric-strip">
+        <div>
+          <strong>{{ demo.finalRecommendation.fit }}%</strong>
+          <span>Fit</span>
+        </div>
+        <div>
+          <strong>{{ demo.finalRecommendation.culture }}%</strong>
+          <span>Culture</span>
+        </div>
+        <div>
+          <strong>{{ demo.finalRecommendation.teamImpact }}</strong>
+          <span>Team</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-grid top-gap">
+    <article class="card">
+      <p class="section-kicker">Decision summary</p>
+      <h3>{{ demo.finalRecommendation.candidate }}</h3>
+      <p class="lede small">{{ demo.finalRecommendation.summary }}</p>
+
+      <table class="results-table top-gap">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Fit</th>
+            <th>Culture</th>
+            <th>Risk</th>
+            <th>Team</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let recommendation of demo.candidateRecommendations"
+            [class.results-row-active]="recommendation.candidate === demo.finalRecommendation.candidate"
+          >
+            <td>{{ recommendation.candidate }}</td>
+            <td>{{ recommendation.fit }}%</td>
+            <td>{{ recommendation.culture }}%</td>
+            <td>{{ recommendation.risk }}</td>
+            <td>{{ recommendation.teamImpact }}</td>
+            <td><span class="status-tag">{{ recommendation.status }}</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="report-link-list top-gap">
+        <a
+          class="report-link"
+          *ngFor="let document of demo.allReportLinks"
+          [href]="document.path"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open {{ document.label }}
+        </a>
+      </div>
+    </article>
+
+    <article class="card">
+      <p class="section-kicker">Integration annexure</p>
+      <ul class="simple-list">
+        <li *ngFor="let note of demo.integrationNotes">{{ note }}</li>
+      </ul>
+      <div class="chip-row top-gap">
+        <span class="chip chip-gold">SAP → TalentLab</span>
+        <span class="chip chip-blue">AI summary service</span>
+        <span class="chip chip-green">TalentLab → SAP</span>
+      </div>
+    </article>
+  </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">What this means for the business</p>
+        <h3>Financial linkage for the GE story</h3>
+      </div>
+      <p class="muted">Turns candidate insight into avoided cost and preserved enterprise value.</p>
+    </div>
+
+    <div class="impact-grid top-gap">
+      <div class="impact-card" *ngFor="let item of demo.businessImpact">
+        <strong>{{ item.value }}</strong>
+        <h4>{{ item.label }}</h4>
+        <p>{{ item.detail }}</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Capability evidence matrix</p>
+        <h3>Mapped report outputs</h3>
+      </div>
+      <p class="muted">POC view for the data returned from TalentLab after the workflow completes.</p>
+    </div>
+
+    <div class="matrix-grid">
+      <div class="matrix-row" *ngFor="let capability of demo.capabilities">
+        <div class="matrix-main">
+          <span
+            class="pillar-pill"
+            [ngClass]="demo.getPillar(capability.pillarId)?.colorClass"
+          >
+            {{ demo.getPillar(capability.pillarId)?.title }}
+          </span>
+          <h4>{{ capability.capability }}</h4>
+          <p>{{ capability.businessMeaning }}</p>
+          <small>{{ capability.signal }}</small>
+          <div class="report-link-list top-gap-sm">
+            <a
+              class="report-link"
+              *ngFor="let document of demo.getReportsForCapability(capability.mappedReports)"
+              [href]="document.path"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {{ document.label }}
+            </a>
+          </div>
+        </div>
+        <div class="matrix-meta">
+          <span>{{ capability.mappedReports.join(', ') }}</span>
+          <strong>{{ capability.score }}%</strong>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Round-trip workflow</p>
+        <h3>SAP to TalentLab to SAP</h3>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let item of demo.timeline">
+        <span class="timeline-dot"></span>
+        <div>
+          <h4>{{ item.title }}</h4>
+          <small>{{ item.time }}</small>
+          <p>{{ item.detail }}</p>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
