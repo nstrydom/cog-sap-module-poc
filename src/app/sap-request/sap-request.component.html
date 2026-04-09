@@ -1,33 +1,33 @@
 <section class="page">
   <div class="hero split-panel">
     <div>
-      <p class="eyebrow">Step 1</p>
-      <h2>SAP request triggers the TalentLab workflow</h2>
+      <p class="eyebrow">Workflow View</p>
+      <h2>This is a decision system embedded inside SAP</h2>
       <p class="lede">
-        SAP Module Integration. This shows the requisition context,
-        the auto-selected Cognadev solution, and the handoff into TalentLab.
+        Show how capability requirements are defined in SAP, how Cognadev evaluates the decision,
+        and how the predicted outcome returns into the operating workflow.
       </p>
       <div class="button-row">
-        <button class="btn btn-primary" (click)="launchWorkflow()">Open TalentLab Solution Summary</button>
+        <button class="btn btn-primary" (click)="launchWorkflow()">Open HR Director View</button>
       </div>
     </div>
 
     <div class="hero-card">
-      <span class="label">Auto-selected solution</span>
-      <h3>{{ demo.request.solutionName }}</h3>
-      <p>{{ demo.request.solutionBundle }}</p>
+      <span class="label">Business question</span>
+      <h3>Can I act on it through SAP and the talent system?</h3>
+      <p>Every step below shows the decision being made, the data informing it, and the predicted outcome.</p>
       <div class="metric-strip">
         <div>
-          <strong>Design</strong>
-          <span>Right roles and teams</span>
+          <strong>S/4HANA</strong>
+          <span>Execution context and role trigger</span>
         </div>
         <div>
-          <strong>Fill</strong>
-          <span>Right fit and fragility insight</span>
+          <strong>SuccessFactors</strong>
+          <span>People workflow and decision routing</span>
         </div>
         <div>
-          <strong>Develop</strong>
-          <span>Right growth and enterprise value</span>
+          <strong>Cognadev</strong>
+          <span>Capability requirement and predicted outcome</span>
         </div>
       </div>
     </div>
@@ -35,13 +35,15 @@
 
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Recruitment request</p>
-      <h3>{{ demo.request.vacancy }}</h3>
+      <p class="section-kicker">Workflow 1: SAP → Cognadev</p>
+      <h3>Decision point: defining capability requirement</h3>
+      <p class="muted">The workflow starts with a business need, not an assessment.</p>
       <dl class="detail-list">
-        <div><dt>Requisition</dt><dd>{{ demo.request.requisitionId }}</dd></div>
-        <div><dt>SAP module</dt><dd>{{ demo.request.sapModule }}</dd></div>
-        <div><dt>Business unit</dt><dd>{{ demo.request.businessUnit }}</dd></div>
-        <div><dt>Requested by</dt><dd>{{ demo.request.requester }}</dd></div>
+        <div><dt>Business decision</dt><dd>Define the role needed to execute strategy</dd></div>
+        <div><dt>Workflow context</dt><dd>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</dd></div>
+        <div><dt>SAP connection</dt><dd>{{ demo.request.sapModule }}</dd></div>
+        <div><dt>Data informing the decision</dt><dd>Role context, business unit demand, decision rights, and workflow metadata</dd></div>
+        <div><dt>Predicted outcome</dt><dd>Correct capability requirement before hiring or promotion starts</dd></div>
       </dl>
       <div class="candidate-selector top-gap">
         <label class="selector-label" for="candidate-select">Requested individual</label>
@@ -55,20 +57,27 @@
             {{ option.label }}
           </option>
         </select>
-        <small>The selected individual will drive the TalentLab Summary and SAP Results output.</small>
+        <small>The selected profile will drive the HR Director and Enterprise Reporting views.</small>
       </div>
     </article>
 
     <article class="card">
-      <p class="section-kicker">TalentLab bundle logic</p>
+      <p class="section-kicker">Workflow 2: Cognadev → SAP</p>
+      <h3>Decision point: hire / promote / develop</h3>
       <div class="chip-row">
-        <span class="chip chip-blue">{{ demo.request.purpose }}</span>
-        <span class="chip chip-gold">{{ demo.request.candidateType }}</span>
+        <span class="chip chip-blue">Results returned</span>
+        <span class="chip chip-gold">Fit score calculated</span>
+        <span class="chip chip-green">Embedded into SAP workflow</span>
       </div>
       <p class="muted">
-        The role metadata from SAP pre-selects the Managerial and Professional Roles workflow,
-        bundling the relevant Cognadev reports and skipping manual consultant setup.
+        Cognadev returns decision-ready evidence into SAP so the manager is not reading tool output.
+        They are acting on a predicted business outcome.
       </p>
+      <dl class="detail-list top-gap-sm">
+        <div><dt>Decision being made</dt><dd>Hire, promote, develop, or redesign the role</dd></div>
+        <div><dt>Data informing it</dt><dd>Cognitive match, motivation, values, fragility, and role complexity</dd></div>
+        <div><dt>Predicted outcome</dt><dd>Expected success, risk level, and development path inside SAP</dd></div>
+      </dl>
     </article>
   </div>
 
@@ -82,9 +91,9 @@
     </div>
 
     <article class="card">
-      <p class="section-kicker">Lifecycle intelligence</p>
-      <h3>Acquire to track in one connected workflow</h3>
-      <p class="muted">{{ demo.request.lifecycleNarrative }}</p>
+      <p class="section-kicker">Decision flow through SAP</p>
+      <h3>Board to role to individual in one connected operating flow</h3>
+      <p class="muted">The workflow exists to improve the business decision, not to showcase separate modules.</p>
       <div class="solution-grid lifecycle-grid">
         <div class="solution-tile" *ngFor="let stage of demo.lifecycleStages" [class.active]="stage.active">
           <div>

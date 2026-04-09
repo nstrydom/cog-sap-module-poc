@@ -1,47 +1,47 @@
 <section class="page dashboard-page">
   <div class="hero split-panel hero-panel">
     <div>
-      <p class="eyebrow">Unified Performance System</p>
+      <p class="eyebrow">CEO / COO View</p>
       <h2>SAP: From System of Record to Prediction Engine</h2>
       <p class="lede">
-        SAP already captures financial, operational, and workforce data. The missing layer is
-        human capability that makes performance predictable.
+        This shows whether your organisation is capable of delivering results before results
+        happen.
+      </p>
+      <p class="lede small top-gap-sm">
+        We are not showing tools. We are showing how a business is run through the lens of human
+        capability.
       </p>
 
       <div class="connect-row top-gap-sm">
-        <span class="connect-label">We connect</span>
+        <span class="connect-label">Every screen connects</span>
         <div class="chip-row">
           <span class="chip chip-blue">Business outcomes</span>
-          <span class="chip chip-green">Organisational design</span>
+          <span class="chip chip-green">Organisational journey</span>
           <span class="chip chip-gold">Human capability</span>
         </div>
       </div>
-
-      <p class="lede small top-gap-sm">
-        Directly into SAP to enable prediction, not just reporting.
-      </p>
     </div>
 
     <div class="hero-card hero-card-strong">
-      <span class="label">Performance shift</span>
-      <h3>From descriptive reporting to predictive execution</h3>
+      <span class="label">Board question</span>
+      <h3>Can I see whether my business will deliver results?</h3>
       <p>
-        Cognadev positions SAP as the execution backbone, organisational design as the operating
-        system, human capability as the missing signal, and AI as the orchestration layer.
+        Click any outcome below to trace performance risk into the organisational journey, the
+        roles creating drag, and the capability that is missing.
       </p>
 
       <div class="metric-strip">
         <div>
-          <strong>5</strong>
-          <span>Outcome dimensions that define organisational performance</span>
+          <strong>Board</strong>
+          <span>Business outcomes and risk signals</span>
         </div>
         <div>
-          <strong>6</strong>
-          <span>Organisational design levers that produce those outcomes</span>
+          <strong>Function</strong>
+          <span>Journey breakdown by operating driver</span>
         </div>
         <div>
-          <strong>1</strong>
-          <span>Closed-loop system linking capability, SAP execution, and AI optimisation</span>
+          <strong>Role</strong>
+          <span>Capability gaps, misalignment, and leadership risk</span>
         </div>
       </div>
     </div>
@@ -50,102 +50,131 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 1</p>
-        <h3>What Defines Organisational Performance</h3>
+        <p class="section-kicker">Top Layer</p>
+        <h3>Business Outcomes</h3>
       </div>
+      <p class="muted">Economic engine, execution, adaptability, capital allocation, and alignment.</p>
     </div>
 
-    <p class="lede body-copy">
-      Business performance is not driven by activity. It is driven by outcomes.
-    </p>
-    <p class="lede small body-copy">
-      There are five dimensions that consistently define successful organisations:
-    </p>
-
-    <div class="story-grid top-gap">
-      <section class="story-card" *ngFor="let dimension of outcomeDimensions">
-        <h4>{{ dimension.title }}</h4>
-        <p>{{ dimension.detail }}</p>
-      </section>
-    </div>
-
-    <div class="narrative-band top-gap">
-      <p>These outcomes are already measured in SAP.</p>
-      <p>The challenge is not measurement.</p>
-      <p>The challenge is understanding what drives them.</p>
+    <div class="outcome-grid top-gap">
+      <button
+        class="outcome-card"
+        *ngFor="let outcome of outcomeDimensions"
+        [class.active]="outcome.key === selectedOutcomeKey"
+        type="button"
+        (click)="selectOutcome(outcome.key)"
+      >
+        <span class="framework-label">Current score</span>
+        <strong>{{ outcome.score }}%</strong>
+        <h4>{{ outcome.title }}</h4>
+        <p>{{ outcome.risk }}</p>
+        <div class="outcome-meta">
+          <span class="trend-pill">{{ outcome.trend }}</span>
+          <span class="risk-pill">{{ outcome.risk }}</span>
+        </div>
+      </button>
     </div>
   </article>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 2</p>
-        <h3>How Organisations Deliver These Outcomes</h3>
+        <p class="section-kicker">Drill-Down</p>
+        <h3>{{ selectedOutcome.title }}</h3>
       </div>
+      <p class="muted">{{ selectedOutcome.outcomeQuestion }}</p>
     </div>
 
-    <p class="lede body-copy">
-      These outcomes do not happen directly. They are produced by how the organisation is designed.
-    </p>
-    <p class="lede small body-copy">We define a structured organisational journey:</p>
+    <div class="drilldown-grid top-gap">
+      <section class="drilldown-panel">
+        <span class="framework-label">Outcome read</span>
+        <p class="drilldown-copy">{{ selectedOutcome.message }}</p>
+
+        <div class="path-strip">
+          <div>
+            <small>Board</small>
+            <strong>{{ selectedOutcome.title }}</strong>
+          </div>
+          <div>
+            <small>Function</small>
+            <strong>{{ selectedOutcome.drillDown.function }}</strong>
+          </div>
+          <div>
+            <small>Role</small>
+            <strong>{{ selectedOutcome.drillDown.role }}</strong>
+          </div>
+          <div>
+            <small>Individual</small>
+            <strong>{{ selectedOutcome.drillDown.individual }}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="drilldown-panel accent-panel">
+        <span class="framework-label">Message to land</span>
+        <p class="drilldown-copy">
+          This shows whether your organisation is capable of delivering results before results
+          happen.
+        </p>
+        <div class="missing-capability">
+          <small>Missing capability</small>
+          <strong>{{ selectedOutcome.drillDown.missingCapability }}</strong>
+        </div>
+      </section>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Middle Layer</p>
+        <h3>Organisational Journey</h3>
+      </div>
+      <p class="muted">How the selected outcome is produced by organisational design.</p>
+    </div>
 
     <div class="journey-grid top-gap">
-      <section class="journey-card" *ngFor="let step of journeySteps; let i = index">
-        <span class="journey-index">0{{ i + 1 }}</span>
+      <section class="journey-card" *ngFor="let step of selectedOutcome.journey">
+        <span class="journey-index">{{ step.score }}%</span>
         <h4>{{ step.title }}</h4>
         <p>{{ step.detail }}</p>
       </section>
     </div>
-
-    <div class="signal-card top-gap">
-      <strong>If this system is misaligned, outcomes will consistently underdeliver.</strong>
-    </div>
   </article>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 3</p>
-        <h3>The Cognitive Layer: Linking Capability to Performance</h3>
+        <p class="section-kicker">Driver Layer</p>
+        <h3>Human Capability</h3>
       </div>
+      <p class="muted">The underlying human signals driving the selected performance outcome.</p>
     </div>
-
-    <p class="lede body-copy">Every outcome in an organisation is the result of decisions.</p>
-
-    <div class="decision-lines top-gap-sm">
-      <p>Pricing decisions drive margin</p>
-      <p>Investment decisions drive returns</p>
-      <p>Operational decisions drive execution</p>
-    </div>
-
-    <p class="lede small body-copy">
-      Decision quality is not random. It is driven by:
-    </p>
 
     <div class="driver-grid top-gap">
-      <section class="driver-card" *ngFor="let driver of capabilityDrivers">
-        <h4>{{ driver.title }}</h4>
-        <p>{{ driver.detail }}</p>
+      <section
+        class="driver-card"
+        *ngFor="let signal of selectedOutcome.capabilitySignals"
+        [ngClass]="getSignalClass(signal.severity)"
+      >
+        <span class="framework-label">{{ signal.severity }} priority</span>
+        <h4>{{ signal.title }}</h4>
+        <p>{{ signal.detail }}</p>
       </section>
-    </div>
-
-    <div class="narrative-band top-gap">
-      <p>For the first time, these can be measured and linked directly to organisational performance.</p>
-      <p>This is the missing layer in enterprise systems.</p>
     </div>
   </article>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 4</p>
-        <h3>Embedded Within SAP</h3>
+        <p class="section-kicker">Embedded Within SAP</p>
+        <h3>Execution Backbone</h3>
       </div>
     </div>
 
     <p class="lede body-copy">
-      We extend SAP into a performance system by linking outcomes, organisational design, and
-      human capability.
+      SAP is where the business is executed and measured. Cognadev adds the missing cognitive layer
+      that links outcomes, organisational design, and human capability.
     </p>
 
     <div class="sap-grid top-gap">
@@ -169,15 +198,14 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 5</p>
+        <p class="section-kicker">AI Layer</p>
         <h3>AI-Driven Performance Orchestration</h3>
       </div>
     </div>
 
     <p class="lede body-copy">
-      AI connects SAP, organisational design, and human capability into a single system.
+      AI connects SAP, organisational design, and human capability into a single decision system.
     </p>
-    <p class="lede small body-copy">It enables:</p>
 
     <div class="story-grid top-gap ai-grid">
       <section class="story-card ai-card" *ngFor="let capability of aiCapabilities">
@@ -185,22 +213,15 @@
         <p>{{ capability.detail }}</p>
       </section>
     </div>
-
-    <div class="signal-card top-gap">
-      <strong>This shifts organisations from reactive management to predictive execution.</strong>
-    </div>
   </article>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 6</p>
+        <p class="section-kicker">System View</p>
         <h3>A Unified Performance System</h3>
       </div>
     </div>
-
-    <p class="lede body-copy">Business performance is no longer managed in silos.</p>
-    <p class="lede small body-copy">We integrate:</p>
 
     <div class="system-loop top-gap">
       <section class="system-node" *ngFor="let layer of systemLayers">
@@ -217,7 +238,7 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Section 7</p>
+        <p class="section-kicker">Use Case</p>
         <h3>Example: Capital Allocation</h3>
       </div>
     </div>
@@ -247,7 +268,7 @@
           </div>
         </div>
 
-        <div class="outcome-card">
+        <div class="outcome-note">
           <span class="framework-label">Outcome</span>
           <p>Improved capital efficiency and returns.</p>
         </div>
@@ -256,31 +277,6 @@
   </article>
 
   <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Section 8</p>
-        <h3>The Future of Enterprise Performance</h3>
-      </div>
-    </div>
-
-    <p class="lede body-copy">
-      Organisations will not be defined by how well they report performance.
-    </p>
-    <p class="lede small body-copy">They will be defined by how well they:</p>
-
-    <div class="closing-grid top-gap">
-      <div class="closing-card">Design performance</div>
-      <div class="closing-card">Measure decision capability</div>
-      <div class="closing-card">Predict outcomes</div>
-      <div class="closing-card">Optimise execution</div>
-    </div>
-
-    <div class="signal-card top-gap">
-      <strong>We enable organisations to do exactly that.</strong>
-    </div>
-  </article>
-
-  <article class="card top-gap team-notes-card">
     <div class="section-heading">
       <div>
         <p class="section-kicker">Final Notes</p>

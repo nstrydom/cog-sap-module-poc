@@ -1,17 +1,18 @@
 <section class="page">
   <div class="hero split-panel">
     <div>
-      <p class="eyebrow">Step 3</p>
-      <h2>SAP module PASS-ON</h2>
+      <p class="eyebrow">Enterprise Reporting</p>
+      <h2>This replaces reporting with prediction</h2>
       <p class="lede">
-        TalentLab sends the completed reports and
-        the AI-generated recommendation back through the integration layer to SAP with below data points.
+        Outcomes, organisational journey, and human capability are visible in one board layer so
+        leaders can see execution risk before it manifests.
       </p>
       <div class="hero-title-line top-gap-sm">{{ demo.displayedResultsTitle }}</div>
     </div>
 
     <div class="hero-card">
-      <span class="label">Recommendation</span>
+      <span class="label">Board question</span>
+      <h3>Can I see whether we will deliver strategy?</h3>
       <div class="recommendation-badge">{{ demo.displayedRecommendation.status }}</div>
       <p>{{ demo.displayedRecommendation.readiness }} · {{ demo.displayedRecommendation.risk }} risk</p>
       <div class="candidate-selector top-gap-sm">
@@ -29,16 +30,16 @@
       </div>
       <div class="metric-strip">
         <div>
-          <strong>{{ demo.displayedRecommendation.fit }}%</strong>
-          <span>Fit</span>
+          <strong>SAC</strong>
+          <span>Outcome dashboard</span>
         </div>
         <div>
-          <strong>{{ demo.displayedRecommendation.culture }}%</strong>
-          <span>Culture</span>
+          <strong>BTP</strong>
+          <span>Cross-linking and AI layer</span>
         </div>
         <div>
           <strong>{{ demo.displayedRecommendation.teamImpact }}</strong>
-          <span>Team</span>
+          <span>Predicted team impact</span>
         </div>
       </div>
     </div>
@@ -46,9 +47,9 @@
 
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Decision summary</p>
+      <p class="section-kicker">Integrated performance dashboard</p>
       <h3>{{ demo.displayedRecommendation.candidate }}</h3>
-      <p class="muted">{{ demo.requestBase.vacancy }}</p>
+      <p class="muted">{{ demo.requestBase.vacancy }} · Organisational outcome visible through people and role quality</p>
       <p class="lede small">{{ demo.displayedRecommendation.summary }}</p>
 
       <table class="results-table top-gap">
@@ -91,14 +92,17 @@
     </article>
 
     <article class="card">
-      <p class="section-kicker">Integration annexure</p>
+      <p class="section-kicker">Cross-linking</p>
+      <h3>Execution issue → job design → capability gap</h3>
       <ul class="simple-list">
-        <li *ngFor="let note of demo.integrationNotes">{{ note }}</li>
+        <li>Execution issue is linked to organisational design choices, not just lagging operational metrics.</li>
+        <li>Job design misalignment is traced to where decision rights and role complexity do not match.</li>
+        <li>Capability gaps are surfaced at the exact role and person level affecting outcomes.</li>
       </ul>
       <div class="chip-row top-gap">
-        <span class="chip chip-gold">SAP → TalentLab</span>
-        <span class="chip chip-blue">AI summary service</span>
-        <span class="chip chip-green">TalentLab → SAP</span>
+        <span class="chip chip-gold">SAC dashboards</span>
+        <span class="chip chip-blue">BTP / AI layer</span>
+        <span class="chip chip-green">SuccessFactors + S/4HANA</span>
       </div>
     </article>
   </div>
@@ -106,10 +110,10 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">What this means for the business</p>
-        <h3>Financial linkage for the GE story</h3>
+        <p class="section-kicker">Predictive indicators</p>
+        <h3>Probability, fragility, and readiness</h3>
       </div>
-      <p class="muted">Turns candidate insight into avoided cost and preserved enterprise value.</p>
+      <!--<p class="muted">The board layer must show predicted execution success, fragility, and succession strength together.</p>-->
     </div>
 
     <div class="impact-grid top-gap">
@@ -126,9 +130,9 @@
     <div class="section-heading">
       <div>
         <p class="section-kicker">Capability evidence matrix</p>
-        <h3>Mapped report outputs</h3>
+        <h3>Human capability linked to enterprise performance</h3>
       </div>
-      <p class="muted">POC view for the data returned from TalentLab after the workflow completes.</p>
+      <!--<p class="muted">This is not standalone assessment output. It is the evidence layer behind enterprise prediction.</p>-->
     </div>
 
     <div class="matrix-grid">
@@ -167,7 +171,7 @@
     <div class="section-heading">
       <div>
         <p class="section-kicker">Round-trip workflow</p>
-        <h3>SAP to TalentLab to SAP</h3>
+        <h3>Board → function → role → individual</h3>
       </div>
     </div>
 

@@ -1,19 +1,20 @@
 <section class="page">
   <div class="hero split-panel">
     <div>
-      <p class="eyebrow">Step 2</p>
-      <h2>TalentLab workflow summary</h2>
+      <p class="eyebrow">HR Director View</p>
+      <h2>People decisions are no longer subjective</h2>
       <p class="lede">
-        SAP request into TalentLab: Assessment Completed, below evidence package that will be submitted for AI summarisation.
+        This lens links role complexity, candidate fit, and development action directly to business
+        outcomes.
       </p>
     </div>
 
     <div class="hero-card">
-      <span class="label">Candidate in progress</span>
-      <h3>{{ demo.request.candidate }}</h3>
-      <p>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</p>
+      <span class="label">Business question</span>
+      <h3>Can I understand what is driving the outcome?</h3>
+      <p>Role-level signals, hiring decisions, and performance risk are connected in one view.</p>
       <div class="candidate-selector top-gap-sm">
-        <label class="selector-label" for="summary-candidate-select">Requested individual</label>
+        <label class="selector-label" for="summary-candidate-select">Selected individual</label>
         <select
           id="summary-candidate-select"
           class="selector-input"
@@ -25,57 +26,82 @@
           </option>
         </select>
       </div>
-      <div class="status-pill">{{ demo.isSubmitted ? 'Submitted back to SAP' : 'Ready to submit' }}</div>
+      <div class="metric-strip">
+        <div>
+          <strong>SuccessFactors</strong>
+          <span>Recruiting and talent workflow</span>
+        </div>
+        <div>
+          <strong>Performance &amp; Goals</strong>
+          <span>Capability gap and development priorities</span>
+        </div>
+        <div>
+          <strong>Succession</strong>
+          <span>Readiness and leadership risk</span>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="card-grid top-gap">
+    <article class="card">
+      <p class="section-kicker">Role-Level View</p>
+      <h3>{{ demo.request.vacancy }}</h3>
+      <dl class="detail-list">
+        <div><dt>Role complexity (CCM)</dt><dd>{{ demo.capabilities[0].score }}%</dd></div>
+        <div><dt>Required capability</dt><dd>Strategic judgement, role-fit, and stakeholder complexity handling</dd></div>
+        <div><dt>Current incumbent capability</dt><dd>{{ demo.request.candidate }}</dd></div>
+        <div><dt>Gap and risk</dt><dd>{{ demo.displayedRecommendation.readiness }} · {{ demo.displayedRecommendation.risk }} risk</dd></div>
+      </dl>
+    </article>
+
+    <article class="card">
+      <p class="section-kicker">Hiring View</p>
+      <h3>{{ demo.request.candidate }}</h3>
+      <p>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</p>
+      <dl class="detail-list">
+        <div><dt>Candidate fit score</dt><dd>{{ demo.displayedRecommendation.fit }}%</dd></div>
+        <div><dt>Cognitive match</dt><dd>{{ demo.capabilities[0].score }}%</dd></div>
+        <div><dt>Motivation and values alignment</dt><dd>{{ demo.displayedRecommendation.culture }}%</dd></div>
+        <div><dt>Predicted success</dt><dd>{{ demo.displayedRecommendation.status }}</dd></div>
+      </dl>
+      <div class="status-pill top-gap-sm">{{ demo.isSubmitted ? 'Submitted to enterprise reporting' : 'Ready for decision submission' }}</div>
+    </article>
   </div>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Requested individuals</p>
-        <h3>Two candidates attached to this requisition</h3>
+        <p class="section-kicker">Performance View</p>
+        <h3>Capability, fragility, and development priorities</h3>
       </div>
-      <p class="muted">Switching the selected individual updates the TalentLab evidence and downstream SAP result.</p>
+      <!--<p class="muted">Use this view to distinguish over-capability, under-capability, and development action.</p>-->
     </div>
 
     <div class="candidate-overview-grid top-gap">
-      <div
-        class="candidate-overview-card"
-        *ngFor="let option of demo.candidateOptions"
-        [class.active]="option.key === demo.selectedCandidateKey"
-      >
-        <strong>{{ option.label }}</strong>
-        <span>{{ option.key === demo.selectedCandidateKey ? 'Selected for review' : 'Available in this request' }}</span>
+      <div class="candidate-overview-card active">
+        <strong>Over / under capability</strong>
+        <span>{{ demo.displayedRecommendation.readiness }}</span>
+      </div>
+      <div class="candidate-overview-card active">
+        <strong>Fragility (PRP)</strong>
+        <span>{{ demo.displayedRecommendation.risk }} risk profile</span>
+      </div>
+      <div class="candidate-overview-card active">
+        <strong>Development priorities</strong>
+        <span>Target role-fit, resilience, and leadership readiness</span>
+      </div>
+      <div class="candidate-overview-card active">
+        <strong>SAP linkage</strong>
+        <span>SuccessFactors Recruiting · Performance &amp; Goals · Succession</span>
       </div>
     </div>
   </article>
 
-  <section class="workflow-steps top-gap">
-    <article class="step-card done">
-      <span>01</span>
-      <h3>Purpose selected</h3>
-      <p>{{ demo.request.purpose }}</p>
-    </article>
-    <article class="step-card done">
-      <span>02</span>
-      <h3>Assessments bundled</h3>
-      <p>CPP, VO, MP, PRP, and CCM selected from the TalentLab solution flow.</p>
-    </article>
-    <article class="step-card done">
-      <span>03</span>
-      <h3>Reports completed</h3>
-      <p>All report outputs received with timestamps and confidence signals.</p>
-    </article>
-    <article class="step-card active">
-      <span>04</span>
-      <h3>AI submission</h3>
-      <p>Send the report package into the summarisation endpoint for SAP-ready output.</p>
-    </article>
-  </section>
-
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Selected assessments</p>
+      <p class="section-kicker">Evidence package</p>
+      <h3>What informs the people decision</h3>
       <div class="assessment-grid">
         <div class="assessment-card" *ngFor="let assessment of demo.assessments">
           <div class="assessment-head">
@@ -101,7 +127,8 @@
     </article>
 
     <article class="card">
-      <p class="section-kicker">AI intelligence engine</p>
+      <p class="section-kicker">Decision engine</p>
+      <h3>How the recommendation is formed</h3>
       <div class="prompt-box">
         <p>{{ demo.aiPrompt }}</p>
       </div>
@@ -120,9 +147,9 @@
         </a>
       </div>
       <div class="button-row top-gap">
-        <button class="btn btn-secondary" routerLink="/sap-request">Back to SAP request</button>
+        <button class="btn btn-secondary" routerLink="/sap-request">Back to Workflow View</button>
         <button class="btn btn-primary" [disabled]="demo.isSubmitting" (click)="submit()">
-          {{ demo.isSubmitting ? 'Submitting to summary service...' : 'Submit or auto-submit result' }}
+          {{ demo.isSubmitting ? 'Submitting to enterprise reporting...' : 'Send to Enterprise Reporting' }}
         </button>
       </div>
     </article>
@@ -131,10 +158,10 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Three solution pillars</p>
-        <h3>Design right, fill right, develop right</h3>
+        <p class="section-kicker">Capability breakdown</p>
+        <h3>Role, hiring, and performance signals in one model</h3>
       </div>
-      <p class="muted">Nine capabilities grouped into three sellable solution pillars for the GE story.</p>
+      <p class="muted">This is the cognitive layer that explains why the business outcome will or will not happen.</p>
     </div>
 
     <div class="pillar-grid">
@@ -211,8 +238,8 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Stack-up verdict</p>
-        <h3>Design right, fill right, develop right in one glance</h3>
+        <p class="section-kicker">Decision summary</p>
+        <h3>People decisions linked directly to outcomes</h3>
       </div>
     </div>
 
@@ -241,7 +268,7 @@
     <div class="section-heading">
       <div>
         <p class="section-kicker">Workflow timeline</p>
-        <h3>Assessment completion narrative</h3>
+        <h3>How this decision moves through the system</h3>
       </div>
     </div>
 
