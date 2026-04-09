@@ -311,6 +311,38 @@
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(215, 162, 51, 0.14));
 }
 
+.team-notes-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(236, 244, 247, 0.88));
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+}
+
+.notes-panel {
+  padding: 1.2rem;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.notes-panel-warning {
+  background: linear-gradient(180deg, rgba(180, 69, 95, 0.08), rgba(255, 255, 255, 0.78));
+  border-color: rgba(180, 69, 95, 0.22);
+}
+
+.notes-list {
+  margin: 0.8rem 0 0;
+  padding-left: 1.2rem;
+  line-height: 1.8;
+}
+
+.notes-list li + li {
+  margin-top: 0.2rem;
+}
+
 @media (max-width: 1100px) {
   .story-grid,
   .driver-grid,
@@ -319,7 +351,8 @@
   .ai-grid,
   .journey-grid,
   .sap-grid,
-  .use-case-layout {
+  .use-case-layout,
+  .notes-grid {
     grid-template-columns: 1fr;
   }
 
