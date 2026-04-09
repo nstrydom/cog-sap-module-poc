@@ -1,47 +1,52 @@
 <section class="page dashboard-page">
   <div class="hero split-panel hero-panel">
-    <div>
+    <div class="hero-copy">
       <p class="eyebrow">CEO / COO View</p>
-      <h2>SAP: From System of Record to Prediction Engine</h2>
+      <h2 class="hero-title">
+        <span>Enterprise Readiness</span>
+        <span>Cockpit</span>
+      </h2>
       <p class="lede">
-        This shows whether your organisation is capable of delivering results before results
-        happen.
-      </p>
-      <p class="lede small top-gap-sm">
-        We are not showing tools. We are showing how a business is run through the lens of human
-        capability.
+        Select a business scenario, click an outcome, and inspect what is failing, which roles are
+        causing it, and what capability is missing.
       </p>
 
-      <div class="connect-row top-gap-sm">
-        <span class="connect-label">Every screen connects</span>
-        <div class="chip-row">
-          <span class="chip chip-blue">Business outcomes</span>
-          <span class="chip chip-green">Organisational journey</span>
-          <span class="chip chip-gold">Human capability</span>
+      <div class="metric-strip top-gap-sm hero-metrics">
+        <div>
+          <strong>{{ selectedScenario.probabilityOfDelivery }}%</strong>
+          <span>Probability of delivery</span>
+        </div>
+        <div>
+          <strong>{{ selectedScenario.fragilityIndex }}</strong>
+          <span>Fragility index</span>
+        </div>
+        <div [ngClass]="getHealthClass(outcomeHealthLabel)">
+          <strong>{{ outcomeHealthLabel }}</strong>
+          <span>Current state</span>
         </div>
       </div>
     </div>
 
-    <div class="hero-card hero-card-strong">
-      <span class="label">Board question</span>
-      <h3>Can I see whether my business will deliver results?</h3>
-      <p>
-        Click any outcome below to trace performance risk into the organisational journey, the
-        roles creating drag, and the capability that is missing.
-      </p>
-
-      <div class="metric-strip">
+    <div class="hero-card hero-card-strong decision-card">
+      <span class="label">Active scenario</span>
+      <h3>{{ selectedScenario.title }}</h3>
+      <p>{{ selectedScenario.summary }}</p>
+      <div class="path-strip compact-path top-gap-sm">
         <div>
-          <strong>Board</strong>
-          <span>Business outcomes and risk signals</span>
+          <small>Primary risk</small>
+          <strong>{{ selectedScenario.primaryRisk }}</strong>
         </div>
         <div>
-          <strong>Function</strong>
-          <span>Journey breakdown by operating driver</span>
+          <small>Function</small>
+          <strong>{{ selectedOutcome.diagnosis.function }}</strong>
         </div>
         <div>
-          <strong>Role</strong>
-          <span>Capability gaps, misalignment, and leadership risk</span>
+          <small>Failing step</small>
+          <strong>{{ selectedOutcome.diagnosis.failingJourneyStep }}</strong>
+        </div>
+        <div>
+          <small>Missing capability</small>
+          <strong>{{ selectedOutcome.diagnosis.missingCapability }}</strong>
         </div>
       </div>
     </div>
@@ -50,27 +55,26 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Top Layer</p>
-        <h3>Business Outcomes</h3>
+        <p class="section-kicker">Scenario Selector</p>
+        <h3>Example Outputs</h3>
       </div>
-      <p class="muted">Economic engine, execution, adaptability, capital allocation, and alignment.</p>
+      <p class="muted">Three interactive scenarios showing different enterprise conditions.</p>
     </div>
 
-    <div class="outcome-grid top-gap">
+    <div class="scenario-grid top-gap">
       <button
-        class="outcome-card"
-        *ngFor="let outcome of outcomeDimensions"
-        [class.active]="outcome.key === selectedOutcomeKey"
+        class="scenario-card"
+        *ngFor="let scenario of scenarios"
+        [class.active]="scenario.key === selectedScenarioKey"
         type="button"
-        (click)="selectOutcome(outcome.key)"
+        (click)="selectScenario(scenario.key)"
       >
-        <span class="framework-label">Current score</span>
-        <strong>{{ outcome.score }}%</strong>
-        <h4>{{ outcome.title }}</h4>
-        <p>{{ outcome.risk }}</p>
-        <div class="outcome-meta">
-          <span class="trend-pill">{{ outcome.trend }}</span>
-          <span class="risk-pill">{{ outcome.risk }}</span>
+        <span class="framework-label">{{ scenario.label }}</span>
+        <h4>{{ scenario.title }}</h4>
+        <p>{{ scenario.summary }}</p>
+        <div class="scenario-meta">
+          <span>{{ scenario.probabilityOfDelivery }}% delivery</span>
+          <span>{{ scenario.fragilityIndex }} fragility</span>
         </div>
       </button>
     </div>
@@ -79,76 +83,93 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Drill-Down</p>
-        <h3>{{ selectedOutcome.title }}</h3>
+        <p class="section-kicker">A. Business Outcomes</p>
+        <h3>Top Layer</h3>
       </div>
-      <p class="muted">{{ selectedOutcome.outcomeQuestion }}</p>
+      <p class="muted">Each outcome shows current score, risk indicator, and trend.</p>
     </div>
 
-    <div class="drilldown-grid top-gap">
-      <section class="drilldown-panel">
-        <span class="framework-label">Outcome read</span>
-        <p class="drilldown-copy">{{ selectedOutcome.message }}</p>
-
-        <div class="path-strip">
-          <div>
-            <small>Board</small>
-            <strong>{{ selectedOutcome.title }}</strong>
-          </div>
-          <div>
-            <small>Function</small>
-            <strong>{{ selectedOutcome.drillDown.function }}</strong>
-          </div>
-          <div>
-            <small>Role</small>
-            <strong>{{ selectedOutcome.drillDown.role }}</strong>
-          </div>
-          <div>
-            <small>Individual</small>
-            <strong>{{ selectedOutcome.drillDown.individual }}</strong>
-          </div>
+    <div class="outcome-grid top-gap">
+      <button
+        class="outcome-card"
+        *ngFor="let outcome of selectedScenario.outcomes"
+        [class.active]="outcome.key === selectedOutcomeKey"
+        type="button"
+        (click)="selectOutcome(outcome.key)"
+      >
+        <span class="framework-label">Current score</span>
+        <strong [ngClass]="getScoreClass(outcome.score)">{{ outcome.score }}%</strong>
+        <h4>{{ outcome.title }}</h4>
+        <div class="outcome-meta">
+          <span class="risk-pill">{{ outcome.risk }}</span>
+          <span class="trend-pill">{{ outcome.trend }}</span>
         </div>
-      </section>
-
-      <section class="drilldown-panel accent-panel">
-        <span class="framework-label">Message to land</span>
-        <p class="drilldown-copy">
-          This shows whether your organisation is capable of delivering results before results
-          happen.
-        </p>
-        <div class="missing-capability">
-          <small>Missing capability</small>
-          <strong>{{ selectedOutcome.drillDown.missingCapability }}</strong>
-        </div>
-      </section>
+      </button>
     </div>
   </article>
+
+  <section class="question-grid top-gap">
+    <article class="card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">B. Organisational Journey</p>
+          <h3>{{ selectedOutcome.title }}</h3>
+        </div>
+        <p class="muted">Under this outcome, the journey shows where the system is holding and where it is failing.</p>
+      </div>
+
+      <div class="journey-grid top-gap">
+        <section class="journey-card" *ngFor="let step of selectedOutcome.journey">
+          <span class="journey-index">{{ step.score }}%</span>
+          <h4>{{ step.title }}</h4>
+          <p>{{ step.detail }}</p>
+        </section>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Drill-Down</p>
+          <h3>What Is Failing?</h3>
+        </div>
+      </div>
+
+      <div class="diagnostic-summary">
+        <div class="summary-tile">
+          <span class="framework-label">Failing part of the journey</span>
+          <strong>{{ selectedOutcome.diagnosis.failingJourneyStep }}</strong>
+        </div>
+        <div class="summary-tile">
+          <span class="framework-label">Missing capability</span>
+          <strong>{{ selectedOutcome.diagnosis.missingCapability }}</strong>
+        </div>
+      </div>
+
+      <div class="role-trace-card top-gap-sm">
+        <div>
+          <dt>Function</dt>
+          <dd>{{ selectedOutcome.diagnosis.function }}</dd>
+        </div>
+        <div>
+          <dt>Roles causing drag</dt>
+          <dd>{{ selectedOutcome.diagnosis.roles.join(' · ') }}</dd>
+        </div>
+        <div>
+          <dt>Suggested action</dt>
+          <dd>{{ selectedOutcome.diagnosis.recommendedAction }}</dd>
+        </div>
+      </div>
+    </article>
+  </section>
 
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Middle Layer</p>
-        <h3>Organisational Journey</h3>
+        <p class="section-kicker">C. Human Capability</p>
+        <h3>Driver Layer</h3>
       </div>
-      <p class="muted">How the selected outcome is produced by organisational design.</p>
-    </div>
-
-    <div class="journey-grid top-gap">
-      <section class="journey-card" *ngFor="let step of selectedOutcome.journey">
-        <span class="journey-index">{{ step.score }}%</span>
-        <h4>{{ step.title }}</h4>
-        <p>{{ step.detail }}</p>
-      </section>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Driver Layer</p>
-        <h3>Human Capability</h3>
-      </div>
-      <p class="muted">The underlying human signals driving the selected performance outcome.</p>
+      <p class="muted">Capability gaps, role misalignment, and leadership risk for the selected outcome.</p>
     </div>
 
     <div class="driver-grid top-gap">
@@ -167,143 +188,16 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Embedded Within SAP</p>
-        <h3>Execution Backbone</h3>
+        <p class="section-kicker">Next Lens</p>
+        <h3>Continue The Drill-Down</h3>
       </div>
+      <p class="muted">Move from enterprise diagnosis into role and person-level action.</p>
     </div>
 
-    <p class="lede body-copy">
-      SAP is where the business is executed and measured. Cognadev adds the missing cognitive layer
-      that links outcomes, organisational design, and human capability.
-    </p>
-
-    <div class="sap-grid top-gap">
-      <section class="sap-card" *ngFor="let domain of sapDomains">
-        <div class="sap-card-head">
-          <h4>{{ domain.title }}</h4>
-          <p class="systems-line">{{ domain.systems }}</p>
-        </div>
-        <div class="sap-state">
-          <span class="framework-label">Today</span>
-          <p>{{ domain.today }}</p>
-        </div>
-        <div class="sap-state future">
-          <span class="framework-label">Tomorrow</span>
-          <p>{{ domain.tomorrow }}</p>
-        </div>
-      </section>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">AI Layer</p>
-        <h3>AI-Driven Performance Orchestration</h3>
-      </div>
-    </div>
-
-    <p class="lede body-copy">
-      AI connects SAP, organisational design, and human capability into a single decision system.
-    </p>
-
-    <div class="story-grid top-gap ai-grid">
-      <section class="story-card ai-card" *ngFor="let capability of aiCapabilities">
-        <h4>{{ capability.title }}</h4>
-        <p>{{ capability.detail }}</p>
-      </section>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">System View</p>
-        <h3>A Unified Performance System</h3>
-      </div>
-    </div>
-
-    <div class="system-loop top-gap">
-      <section class="system-node" *ngFor="let layer of systemLayers">
-        <h4>{{ layer.title }}</h4>
-        <p>{{ layer.detail }}</p>
-      </section>
-    </div>
-
-    <div class="narrative-band top-gap">
-      <p>This creates a closed-loop performance system.</p>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Use Case</p>
-        <h3>Example: Capital Allocation</h3>
-      </div>
-    </div>
-
-    <div class="use-case-layout top-gap-sm">
-      <section class="use-case-card">
-        <span class="framework-label">Signal</span>
-        <h4>SAP identifies declining returns.</h4>
-        <p>The system traces:</p>
-
-        <div class="trace-list">
-          <div class="trace-item" *ngFor="let trace of useCaseTrace">
-            <strong>{{ trace.title }}</strong>
-            <p>{{ trace.detail }}</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="use-case-card accent">
-        <span class="framework-label">AI response</span>
-        <h4>AI predicts continued underperformance and recommends:</h4>
-
-        <div class="recommendation-list">
-          <div class="recommendation-item" *ngFor="let recommendation of useCaseRecommendations">
-            <strong>{{ recommendation.title }}</strong>
-            <p>{{ recommendation.detail }}</p>
-          </div>
-        </div>
-
-        <div class="outcome-note">
-          <span class="framework-label">Outcome</span>
-          <p>Improved capital efficiency and returns.</p>
-        </div>
-      </section>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Final Notes</p>
-        <h3>Notes for the Team</h3>
-      </div>
-    </div>
-
-    <div class="notes-grid top-gap-sm">
-      <section class="notes-panel">
-        <span class="framework-label">What this rewrite achieves</span>
-        <ul class="notes-list">
-          <li>Anchors everything in business outcomes</li>
-          <li>Introduces the organisational journey as the key differentiator</li>
-          <li>Positions Cognadev as a cognitive layer, not an HR tool</li>
-          <li>Positions SAP as the execution backbone</li>
-          <li>Positions AI as the orchestration layer</li>
-        </ul>
-      </section>
-
-      <section class="notes-panel notes-panel-warning">
-        <span class="framework-label">What you must not reintroduce</span>
-        <ul class="notes-list">
-          <li>HR-first language</li>
-          <li>Tool-first descriptions</li>
-          <li>Generic “insights” wording</li>
-        </ul>
-      </section>
+    <div class="chip-row top-gap-sm">
+      <a class="btn btn-secondary" routerLink="/talentlab-summary">Open HR Director View</a>
+      <a class="btn btn-secondary" routerLink="/sap-request">Open Workflow</a>
+      <a class="btn btn-primary" routerLink="/sap-results">Open Enterprise Reporting</a>
     </div>
   </article>
 </section>

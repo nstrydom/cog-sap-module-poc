@@ -1,20 +1,17 @@
-<section class="page">
-  <div class="hero split-panel">
-    <div>
+<section class="page reporting-page">
+  <div class="hero split-panel reporting-hero">
+    <div class="reporting-hero-copy">
       <p class="eyebrow">Enterprise Reporting</p>
-      <h2>This replaces reporting with prediction</h2>
-      <p class="lede">
-        Outcomes, organisational journey, and human capability are visible in one board layer so
-        leaders can see execution risk before it manifests.
-      </p>
+      <h2>Integrated Performance Board</h2>
+      <p class="lede">View the selected profile through outcomes, organisational journey, and human capability in one reporting layer.</p>
       <div class="hero-title-line top-gap-sm">{{ demo.displayedResultsTitle }}</div>
     </div>
 
-    <div class="hero-card">
-      <span class="label">Board question</span>
-      <h3>Can I see whether we will deliver strategy?</h3>
-      <div class="recommendation-badge">{{ demo.displayedRecommendation.status }}</div>
-      <p>{{ demo.displayedRecommendation.readiness }} · {{ demo.displayedRecommendation.risk }} risk</p>
+    <div class="hero-card reporting-context-card">
+      <span class="label">SAP linkage</span>
+      <h3>{{ recommendation.candidate }}</h3>
+      <p>{{ recommendation.status }} · {{ recommendation.readiness }}</p>
+
       <div class="candidate-selector top-gap-sm">
         <label class="selector-label" for="results-candidate-select">Requested individual</label>
         <select
@@ -28,162 +25,148 @@
           </option>
         </select>
       </div>
-      <div class="metric-strip">
+
+      <div class="metric-strip reporting-metrics">
         <div>
           <strong>SAC</strong>
-          <span>Outcome dashboard</span>
+          <span>Integrated dashboard</span>
         </div>
         <div>
-          <strong>BTP</strong>
-          <span>Cross-linking and AI layer</span>
+          <strong>BTP / AI</strong>
+          <span>Cross-linking layer</span>
         </div>
-        <div>
-          <strong>{{ demo.displayedRecommendation.teamImpact }}</strong>
-          <span>Predicted team impact</span>
+        <div [ngClass]="riskClass">
+          <strong>{{ recommendation.risk }}</strong>
+          <span>Current risk</span>
         </div>
       </div>
     </div>
   </div>
 
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">A. Integrated Performance Dashboard</p>
+        <h3>Outcomes, Journey, Human Capability</h3>
+      </div>
+    </div>
+
+    <div class="reporting-grid top-gap-sm">
+      <div class="report-tile">
+        <span class="framework-label">Outcome</span>
+        <strong [ngClass]="getChainClass(probabilityOfExecutionSuccess)">{{ probabilityOfExecutionSuccess }}%</strong>
+        <p>Probability of execution success</p>
+      </div>
+      <div class="report-tile">
+        <span class="framework-label">Organisational journey</span>
+        <strong [ngClass]="getChainClass(successionReadiness)">{{ successionReadiness }}%</strong>
+        <p>Succession readiness</p>
+      </div>
+      <div class="report-tile">
+        <span class="framework-label">Human capability</span>
+        <strong [ngClass]="getChainClass(100 - organisationalFragilityIndex)">{{ organisationalFragilityIndex }}</strong>
+        <p>Organisational fragility index</p>
+      </div>
+      <div class="report-tile wide">
+        <span class="framework-label">Selected profile</span>
+        <p>{{ recommendation.summary }}</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">B. Cross-linking</p>
+        <h3>Execution Issue → Job Design → Capability Gap</h3>
+      </div>
+      <p class="muted">Click each node to inspect how the issue is connected across the system.</p>
+    </div>
+
+    <div class="chain-grid top-gap-sm">
+      <button
+        class="chain-card"
+        *ngFor="let node of crossLinkNodes"
+        [class.active]="node.key === selectedChainKey"
+        [ngClass]="getToneClass(node.tone)"
+        type="button"
+        (click)="selectChain(node.key)"
+      >
+        <span class="framework-label">{{ node.title }}</span>
+        <p>{{ node.detail }}</p>
+      </button>
+    </div>
+
+    <div class="selected-chain-card top-gap-sm" [ngClass]="getToneClass(selectedChain.tone)">
+      <span class="framework-label">Selected link</span>
+      <h4>{{ selectedChain.title }}</h4>
+      <p>{{ selectedChain.detail }}</p>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">C. Predictive Indicators</p>
+        <h3>Board Indicators</h3>
+      </div>
+    </div>
+
+    <div class="indicator-grid top-gap-sm">
+      <div class="indicator-card">
+        <span class="framework-label">Probability of execution success</span>
+        <strong [ngClass]="getChainClass(probabilityOfExecutionSuccess)">{{ probabilityOfExecutionSuccess }}%</strong>
+      </div>
+      <div class="indicator-card">
+        <span class="framework-label">Organisational fragility index</span>
+        <strong [ngClass]="getChainClass(100 - organisationalFragilityIndex)">{{ organisationalFragilityIndex }}</strong>
+      </div>
+      <div class="indicator-card">
+        <span class="framework-label">Succession readiness</span>
+        <strong [ngClass]="getChainClass(successionReadiness)">{{ successionReadiness }}%</strong>
+      </div>
+    </div>
+  </article>
+
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Integrated performance dashboard</p>
-      <h3>{{ demo.displayedRecommendation.candidate }}</h3>
-      <p class="muted">{{ demo.requestBase.vacancy }} · Organisational outcome visible through people and role quality</p>
-      <p class="lede small">{{ demo.displayedRecommendation.summary }}</p>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Evidence Links</p>
+          <h3>Reports And Returned Data</h3>
+        </div>
+      </div>
 
-      <table class="results-table top-gap">
-        <thead>
-          <tr>
-            <th>Candidate</th>
-            <th>Fit</th>
-            <th>Culture</th>
-            <th>Risk</th>
-            <th>Team</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            *ngFor="let recommendation of demo.candidateRecommendations"
-            [class.results-row-active]="recommendation.candidate === demo.displayedRecommendation.candidate"
-          >
-            <td>{{ recommendation.candidate }}</td>
-            <td>{{ recommendation.fit }}%</td>
-            <td>{{ recommendation.culture }}%</td>
-            <td>{{ recommendation.risk }}</td>
-            <td>{{ recommendation.teamImpact }}</td>
-            <td><span class="status-tag">{{ recommendation.status }}</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="report-link-list top-gap">
+      <div class="report-link-list top-gap-sm">
         <a
           class="report-link"
-          *ngFor="let document of demo.displayedAllReportLinks"
+          *ngFor="let document of reportLinks"
           [href]="document.path"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Open {{ document.label }}
+          {{ document.label }}
         </a>
       </div>
     </article>
 
     <article class="card">
-      <p class="section-kicker">Cross-linking</p>
-      <h3>Execution issue → job design → capability gap</h3>
-      <ul class="simple-list">
-        <li>Execution issue is linked to organisational design choices, not just lagging operational metrics.</li>
-        <li>Job design misalignment is traced to where decision rights and role complexity do not match.</li>
-        <li>Capability gaps are surfaced at the exact role and person level affecting outcomes.</li>
-      </ul>
-      <div class="chip-row top-gap">
-        <span class="chip chip-gold">SAC dashboards</span>
-        <span class="chip chip-blue">BTP / AI layer</span>
-        <span class="chip chip-green">SuccessFactors + S/4HANA</span>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Timeline</p>
+          <h3>Returned Workflow</h3>
+        </div>
+      </div>
+
+      <div class="timeline compact-timeline">
+        <div class="timeline-item" *ngFor="let item of timeline">
+          <span class="timeline-dot"></span>
+          <div>
+            <h4>{{ item.title }}</h4>
+            <small>{{ item.time }}</small>
+          </div>
+        </div>
       </div>
     </article>
   </div>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Predictive indicators</p>
-        <h3>Probability, fragility, and readiness</h3>
-      </div>
-      <!--<p class="muted">The board layer must show predicted execution success, fragility, and succession strength together.</p>-->
-    </div>
-
-    <div class="impact-grid top-gap">
-      <div class="impact-card" *ngFor="let item of demo.displayedBusinessImpact">
-        <strong>{{ item.value }}</strong>
-        <h4>{{ item.label }}</h4>
-        <p>{{ item.detail }}</p>
-      </div>
-    </div>
-    <p class="financial-line top-gap-sm">{{ demo.selectedResultsProfile?.stackUpVerdict?.financialLine || demo.activeStackUpVerdict.financialLine }}</p>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Capability evidence matrix</p>
-        <h3>Human capability linked to enterprise performance</h3>
-      </div>
-      <!--<p class="muted">This is not standalone assessment output. It is the evidence layer behind enterprise prediction.</p>-->
-    </div>
-
-    <div class="matrix-grid">
-      <div class="matrix-row" *ngFor="let capability of demo.capabilities">
-        <div class="matrix-main">
-          <span
-            class="pillar-pill"
-            [ngClass]="demo.getPillar(capability.pillarId)?.colorClass"
-          >
-            {{ demo.getPillar(capability.pillarId)?.title }}
-          </span>
-          <h4>{{ capability.capability }}</h4>
-          <p>{{ capability.whatItIs }}</p>
-          <small>{{ capability.resultInterpretation }}</small>
-          <div class="report-link-list top-gap-sm">
-            <a
-              class="report-link"
-              *ngFor="let document of demo.getReportsForCapability(capability.mappedReports)"
-              [href]="document.path"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {{ document.label }}
-            </a>
-          </div>
-        </div>
-        <div class="matrix-meta">
-          <span>{{ capability.mappedReports.join(', ') }}</span>
-          <strong>{{ capability.score }}%</strong>
-        </div>
-      </div>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Round-trip workflow</p>
-        <h3>Board → function → role → individual</h3>
-      </div>
-    </div>
-
-    <div class="timeline">
-      <div class="timeline-item" *ngFor="let item of demo.timeline">
-        <span class="timeline-dot"></span>
-        <div>
-          <h4>{{ item.title }}</h4>
-          <small>{{ item.time }}</small>
-          <p>{{ item.detail }}</p>
-        </div>
-      </div>
-    </div>
-  </article>
 </section>

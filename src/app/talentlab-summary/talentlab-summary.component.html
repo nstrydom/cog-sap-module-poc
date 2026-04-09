@@ -1,18 +1,12 @@
-<section class="page">
-  <div class="hero split-panel">
-    <div>
+<section class="page hr-page">
+  <div class="hero split-panel hr-hero">
+    <div class="hr-hero-copy">
       <p class="eyebrow">HR Director View</p>
-      <h2>People decisions are no longer subjective</h2>
+      <h2>Precision People Decisions</h2>
       <p class="lede">
-        This lens links role complexity, candidate fit, and development action directly to business
-        outcomes.
+        Review the role, compare the person, and decide the next action in SAP.
       </p>
-    </div>
 
-    <div class="hero-card">
-      <span class="label">Business question</span>
-      <h3>Can I understand what is driving the outcome?</h3>
-      <p>Role-level signals, hiring decisions, and performance risk are connected in one view.</p>
       <div class="candidate-selector top-gap-sm">
         <label class="selector-label" for="summary-candidate-select">Selected individual</label>
         <select
@@ -26,261 +20,202 @@
           </option>
         </select>
       </div>
-      <div class="metric-strip">
+    </div>
+
+    <div class="hero-card hr-context-card">
+      <span class="label">SAP linkage</span>
+      <h3>{{ demo.request.vacancy }}</h3>
+      <p>{{ demo.request.businessUnit }} · {{ profile.name }}</p>
+
+      <div class="metric-strip hr-metrics">
         <div>
-          <strong>SuccessFactors</strong>
-          <span>Recruiting and talent workflow</span>
+          <strong>Recruiting</strong>
+          <span>SuccessFactors Recruiting</span>
         </div>
         <div>
-          <strong>Performance &amp; Goals</strong>
-          <span>Capability gap and development priorities</span>
+          <strong>Performance</strong>
+          <span>Performance &amp; Goals</span>
         </div>
         <div>
           <strong>Succession</strong>
-          <span>Readiness and leadership risk</span>
+          <span>Succession</span>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="card-grid top-gap">
-    <article class="card">
-      <p class="section-kicker">Role-Level View</p>
-      <h3>{{ demo.request.vacancy }}</h3>
-      <dl class="detail-list">
-        <div><dt>Role complexity (CCM)</dt><dd>{{ demo.capabilities[0].score }}%</dd></div>
-        <div><dt>Required capability</dt><dd>Strategic judgement, role-fit, and stakeholder complexity handling</dd></div>
-        <div><dt>Current incumbent capability</dt><dd>{{ demo.request.candidate }}</dd></div>
-        <div><dt>Gap and risk</dt><dd>{{ demo.displayedRecommendation.readiness }} · {{ demo.displayedRecommendation.risk }} risk</dd></div>
-      </dl>
-    </article>
-
-    <article class="card">
-      <p class="section-kicker">Hiring View</p>
-      <h3>{{ demo.request.candidate }}</h3>
-      <p>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</p>
-      <dl class="detail-list">
-        <div><dt>Candidate fit score</dt><dd>{{ demo.displayedRecommendation.fit }}%</dd></div>
-        <div><dt>Cognitive match</dt><dd>{{ demo.capabilities[0].score }}%</dd></div>
-        <div><dt>Motivation and values alignment</dt><dd>{{ demo.displayedRecommendation.culture }}%</dd></div>
-        <div><dt>Predicted success</dt><dd>{{ demo.displayedRecommendation.status }}</dd></div>
-      </dl>
-      <div class="status-pill top-gap-sm">{{ demo.isSubmitted ? 'Submitted to enterprise reporting' : 'Ready for decision submission' }}</div>
-    </article>
-  </div>
-
   <article class="card top-gap">
     <div class="section-heading">
       <div>
-        <p class="section-kicker">Performance View</p>
-        <h3>Capability, fragility, and development priorities</h3>
+        <p class="section-kicker">Decision Lens</p>
+        <h3>Choose The View</h3>
       </div>
-      <!--<p class="muted">Use this view to distinguish over-capability, under-capability, and development action.</p>-->
     </div>
 
-    <div class="candidate-overview-grid top-gap">
-      <div class="candidate-overview-card active">
-        <strong>Over / under capability</strong>
-        <span>{{ demo.displayedRecommendation.readiness }}</span>
+    <div class="lens-tabs top-gap-sm">
+      <button class="lens-tab" [class.active]="selectedLens === 'role'" type="button" (click)="selectLens('role')">
+        Role-Level View
+      </button>
+      <button class="lens-tab" [class.active]="selectedLens === 'hiring'" type="button" (click)="selectLens('hiring')">
+        Hiring View
+      </button>
+      <button class="lens-tab" [class.active]="selectedLens === 'performance'" type="button" (click)="selectLens('performance')">
+        Performance View
+      </button>
+    </div>
+  </article>
+
+  <article class="card top-gap" *ngIf="selectedLens === 'role'">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">A. Role-Level View</p>
+        <h3>Role Design And Capability Match</h3>
       </div>
-      <div class="candidate-overview-card active">
-        <strong>Fragility (PRP)</strong>
-        <span>{{ demo.displayedRecommendation.risk }} risk profile</span>
+    </div>
+
+      <div class="decision-grid top-gap-sm">
+        <div class="decision-card">
+          <span class="framework-label">Role complexity (CCM)</span>
+          <strong>{{ primaryCapabilityScore }}%</strong>
+        </div>
+      <div class="decision-card">
+        <span class="framework-label">Required capability</span>
+        <strong>Strategic judgement and stakeholder complexity</strong>
       </div>
-      <div class="candidate-overview-card active">
-        <strong>Development priorities</strong>
-        <span>Target role-fit, resilience, and leadership readiness</span>
+        <div class="decision-card">
+          <span class="framework-label">Current incumbent capability</span>
+          <strong>{{ profile.name }}</strong>
+        </div>
+        <div class="decision-card accent" [ngClass]="getRiskClass(recommendation.risk)">
+          <span class="framework-label">Gap and risk</span>
+          <strong>{{ recommendation.readiness }} · {{ recommendation.risk }} risk</strong>
+        </div>
+    </div>
+  </article>
+
+  <article class="card top-gap" *ngIf="selectedLens === 'hiring'">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">B. Hiring View</p>
+        <h3>Candidate Decision Summary</h3>
       </div>
-      <div class="candidate-overview-card active">
-        <strong>SAP linkage</strong>
-        <span>SuccessFactors Recruiting · Performance &amp; Goals · Succession</span>
+    </div>
+
+    <div class="decision-grid top-gap-sm">
+      <div class="decision-card">
+        <span class="framework-label">Candidate fit score</span>
+        <strong>{{ recommendation.fit }}%</strong>
+      </div>
+      <div class="decision-card">
+        <span class="framework-label">Cognitive match</span>
+        <strong>{{ primaryCapabilityScore }}%</strong>
+      </div>
+      <div class="decision-card">
+        <span class="framework-label">Motivation and values alignment</span>
+        <strong>{{ recommendation.culture }}%</strong>
+      </div>
+      <div class="decision-card accent">
+        <span class="framework-label">Predicted success</span>
+        <strong>{{ recommendation.status }}</strong>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap" *ngIf="selectedLens === 'performance'">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">C. Performance View</p>
+        <h3>Development And Risk Decision</h3>
+      </div>
+    </div>
+
+      <div class="decision-grid top-gap-sm">
+        <div class="decision-card">
+          <span class="framework-label">Over / under-capability</span>
+          <strong>{{ recommendation.readiness }}</strong>
+        </div>
+        <div class="decision-card" [ngClass]="getRiskClass(recommendation.risk)">
+          <span class="framework-label">Fragility (PRP)</span>
+          <strong>{{ recommendation.risk }} risk</strong>
+        </div>
+      <div class="decision-card wide">
+        <span class="framework-label">Development priorities</span>
+        <strong>Role-fit, resilience under pressure, and leadership readiness</strong>
       </div>
     </div>
   </article>
 
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Evidence package</p>
-      <h3>What informs the people decision</h3>
-      <div class="assessment-grid">
-        <div class="assessment-card" *ngFor="let assessment of demo.assessments">
-          <div class="assessment-head">
-            <strong>{{ assessment.code }}</strong>
-            <span>{{ assessment.score }}%</span>
-          </div>
-          <h3>{{ assessment.name }}</h3>
-          <p>{{ assessment.insight }}</p>
-          <div class="report-links">
-            <a
-              class="report-link"
-              *ngFor="let document of assessment.documents"
-              [href]="document.path"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open {{ document.label }}
-            </a>
-          </div>
-          <small>{{ assessment.completedAt }} · {{ assessment.status }}</small>
-        </div>
-      </div>
-    </article>
-
-    <article class="card">
-      <p class="section-kicker">Decision engine</p>
-      <h3>How the recommendation is formed</h3>
-      <div class="prompt-box">
-        <p>{{ demo.aiPrompt }}</p>
-      </div>
-      <div class="chip-row top-gap-sm">
-        <span class="chip chip-blue" *ngFor="let assessment of demo.assessments">{{ assessment.report }}</span>
-      </div>
-      <div class="report-link-list top-gap-sm">
-        <a
-          class="report-link"
-          *ngFor="let document of demo.allReportLinks"
-          [href]="document.path"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {{ document.label }}
-        </a>
-      </div>
-      <div class="button-row top-gap">
-        <button class="btn btn-secondary" routerLink="/sap-request">Back to Workflow View</button>
-        <button class="btn btn-primary" [disabled]="demo.isSubmitting" (click)="submit()">
-          {{ demo.isSubmitting ? 'Submitting to enterprise reporting...' : 'Send to Enterprise Reporting' }}
-        </button>
-      </div>
-    </article>
-  </div>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Capability breakdown</p>
-        <h3>Role, hiring, and performance signals in one model</h3>
-      </div>
-      <p class="muted">This is the cognitive layer that explains why the business outcome will or will not happen.</p>
-    </div>
-
-    <div class="pillar-grid">
-      <section
-        class="pillar-section"
-        *ngFor="let pillar of demo.pillars"
-        [ngClass]="pillar.colorClass"
-      >
-        <div class="pillar-header">
-          <div>
-            <p class="section-kicker">{{ pillar.shortLabel }}</p>
-            <h3>{{ pillar.title }}</h3>
-          </div>
-          <p class="muted">{{ pillar.summary }}</p>
-        </div>
-
-        <div class="pillar-framework-grid">
-          <div class="framework-card">
-            <span class="framework-label">Capabilities</span>
-            <p>{{ pillar.capabilities.join(', ') }}</p>
-          </div>
-          <div class="framework-card">
-            <span class="framework-label">Individual success</span>
-            <p>{{ pillar.individualImpact }}</p>
-          </div>
-          <div class="framework-card">
-            <span class="framework-label">Team success</span>
-            <p>{{ pillar.teamImpact }}</p>
-          </div>
-          <div class="framework-card">
-            <span class="framework-label">Organisational success</span>
-            <p>{{ pillar.organisationImpact }}</p>
-          </div>
-          <div class="framework-card framework-card-wide">
-            <span class="framework-label">SAP / HCM linkage</span>
-            <ul class="framework-list">
-              <li *ngFor="let item of pillar.sapLinkage">{{ item }}</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="capability-grid pillar-capability-grid">
-          <div
-            class="capability-card"
-            *ngFor="let capability of demo.getCapabilitiesByPillar(pillar.id)"
-            [ngClass]="[pillar.colorClass, demo.getCapabilityCardClass(capability)]"
-          >
-            <div class="capability-top">
-              <h4>{{ capability.capability }}</h4>
-              <strong>{{ capability.score }}<span>%</span></strong>
-            </div>
-            <span class="alert-pill" *ngIf="demo.isFragilityCapability(capability) && demo.isAlertCapability(capability.score)">Red alert</span>
-            <span class="good-pill" *ngIf="demo.isFragilityCapability(capability) && !demo.isAlertCapability(capability.score)">Low risk</span>
-            <p><strong>What it is:</strong> {{ capability.whatItIs }}</p>
-            <small><strong>What the result says:</strong> {{ capability.resultInterpretation }}</small>
-            <small class="report-code-line">Report codes: {{ capability.mappedReports.join(', ') }}</small>
-            <div class="report-link-list top-gap-sm">
-              <a
-                class="report-link"
-                *ngFor="let document of demo.getReportsForCapability(capability.mappedReports)"
-                [href]="document.path"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {{ document.code }} PDF
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Decision summary</p>
-        <h3>People decisions linked directly to outcomes</h3>
-      </div>
-    </div>
-
-    <div class="verdict-grid top-gap">
-      <div class="verdict-card verdict-design">
-        <strong>Design right</strong>
-        <p>{{ demo.activeStackUpVerdict.designRight }}</p>
-      </div>
-      <div class="verdict-card verdict-fill">
-        <strong>Fill right</strong>
-        <p>{{ demo.activeStackUpVerdict.fillRight }}</p>
-      </div>
-      <div class="verdict-card verdict-develop">
-        <strong>Develop right</strong>
-        <p>{{ demo.activeStackUpVerdict.developRight }}</p>
-      </div>
-    </div>
-
-    <div class="overall-verdict top-gap">
-      <strong>{{ demo.activeStackUpVerdict.overall }}</strong>
-      <p>{{ demo.activeStackUpVerdict.financialLine }}</p>
-    </div>
-  </article>
-
-  <article class="card top-gap">
-    <div class="section-heading">
-      <div>
-        <p class="section-kicker">Workflow timeline</p>
-        <h3>How this decision moves through the system</h3>
-      </div>
-    </div>
-
-    <div class="timeline">
-      <div class="timeline-item" *ngFor="let item of demo.timeline">
-        <span class="timeline-dot"></span>
+      <div class="section-heading">
         <div>
-          <h4>{{ item.title }}</h4>
-          <small>{{ item.time }}</small>
-          <p>{{ item.detail }}</p>
+          <p class="section-kicker">Selected Individual</p>
+          <h3>{{ profile.name }}</h3>
         </div>
       </div>
+
+      <div class="candidate-overview-grid compact-overview top-gap-sm">
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.fit }}%</strong>
+          <span>Fit</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.culture }}%</strong>
+          <span>Values alignment</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.teamImpact }}</strong>
+          <span>Team impact</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.status }}</strong>
+          <span>Decision status</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Timeline</p>
+          <h3>Decision Progress</h3>
+        </div>
+      </div>
+
+      <div class="timeline compact-timeline">
+        <div class="timeline-item" *ngFor="let item of demo.timeline">
+          <span class="timeline-dot"></span>
+          <div>
+            <h4>{{ item.title }}</h4>
+            <small>{{ item.time }}</small>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Capability Pillars</p>
+        <h3>Decision Support Layers</h3>
+      </div>
+    </div>
+
+    <div class="pillar-strip top-gap-sm">
+      <div class="pillar-mini" *ngFor="let pillar of demo.pillars" [ngClass]="pillar.colorClass">
+        <strong>{{ pillar.title }}</strong>
+        <span>{{ pillar.capabilities.join(', ') }}</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="button-row">
+      <button class="btn btn-secondary" routerLink="/sap-request">Open Workflow</button>
+      <button class="btn btn-primary" [disabled]="demo.isSubmitting" (click)="submit()">
+        {{ demo.isSubmitting ? 'Sending...' : 'Send To Enterprise Reporting' }}
+      </button>
     </div>
   </article>
 </section>

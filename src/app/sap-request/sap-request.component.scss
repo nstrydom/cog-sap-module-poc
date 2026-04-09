@@ -1,3 +1,185 @@
 :host {
   display: block;
 }
+
+.workflow-hero {
+  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+  padding: 2rem;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(71, 162, 183, 0.11), transparent 24%),
+    radial-gradient(circle at 86% 82%, rgba(42, 63, 212, 0.12), transparent 28%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(246, 249, 252, 0.9));
+}
+
+.workflow-hero-copy {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.workflow-hero h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+}
+
+.workflow-context-card {
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top right, rgba(102, 165, 196, 0.18), transparent 22%),
+    linear-gradient(165deg, #27485e, #213e54 68%, #1b3548);
+  color: #eff8fc;
+  box-shadow: 0 24px 44px rgba(25, 48, 66, 0.22);
+}
+
+.workflow-context-card .label {
+  background: rgba(255, 255, 255, 0.14);
+  color: #eff8fc;
+}
+
+.workflow-context-card h3,
+.workflow-context-card p,
+.workflow-context-card span,
+.workflow-context-card strong {
+  color: inherit;
+}
+
+.workflow-metrics {
+  margin-top: 1rem;
+}
+
+.workflow-metrics div {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.scenario-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.scenario-card,
+.workflow-stage,
+.decision-detail-card,
+.workflow-input-card {
+  border: 1px solid rgba(32, 49, 60, 0.08);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 250, 252, 0.96));
+}
+
+.scenario-card,
+.workflow-stage {
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.scenario-card {
+  padding: 1rem 1.1rem;
+}
+
+.scenario-card:hover,
+.workflow-stage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(34, 56, 71, 0.08);
+}
+
+.scenario-card.active,
+.workflow-stage.active {
+  border-color: rgba(42, 63, 212, 0.24);
+  box-shadow: 0 18px 34px rgba(42, 63, 212, 0.11);
+  background: linear-gradient(180deg, rgba(42, 63, 212, 0.08), rgba(255, 255, 255, 0.96));
+}
+
+.scenario-card p {
+  margin: 0.45rem 0 0;
+  color: #5b7382;
+  line-height: 1.58;
+}
+
+.workflow-stage-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.workflow-stage {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem 1.05rem;
+}
+
+.workflow-stage strong {
+  color: #223847;
+}
+
+.decision-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.decision-detail-card,
+.workflow-input-card {
+  padding: 1rem 1.05rem;
+}
+
+.decision-detail-card p,
+.workflow-input-card p {
+  margin: 0.45rem 0 0;
+  color: #5c7483;
+  line-height: 1.6;
+}
+
+.decision-detail-card.accent {
+  border-color: rgba(42, 63, 212, 0.18);
+  background: linear-gradient(180deg, rgba(42, 63, 212, 0.08), rgba(255, 255, 255, 0.96));
+}
+
+.workflow-input-card strong {
+  display: block;
+  margin-top: 0.4rem;
+  color: #223847;
+}
+
+.risk-text.status-good {
+  color: #2f7b45;
+}
+
+.risk-text.status-watch {
+  color: #a56c08;
+}
+
+.risk-text.status-alert {
+  color: #a33952;
+}
+
+.compact-overview {
+  gap: 0.85rem;
+}
+
+.compact-overview .candidate-overview-card {
+  min-height: 110px;
+}
+
+.compact-overview strong {
+  font-size: 1.25rem;
+}
+
+.compact-timeline {
+  margin-top: 0.2rem;
+}
+
+.compact-timeline .timeline-item {
+  grid-template-columns: 1.5rem 1fr;
+}
+
+@media (max-width: 1100px) {
+  .workflow-hero,
+  .scenario-grid,
+  .decision-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}

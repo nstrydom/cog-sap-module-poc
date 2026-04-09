@@ -1,3 +1,217 @@
 :host {
   display: block;
 }
+
+.hr-hero {
+  grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+  padding: 2rem;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 14% 18%, rgba(71, 162, 183, 0.11), transparent 24%),
+    radial-gradient(circle at 86% 82%, rgba(42, 63, 212, 0.12), transparent 28%),
+    linear-gradient(140deg, rgba(255, 255, 255, 0.96), rgba(246, 249, 252, 0.9));
+}
+
+.hr-hero-copy {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.hr-hero h2 {
+  margin: 0;
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 0.94;
+  letter-spacing: -0.05em;
+}
+
+.hr-context-card {
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top right, rgba(102, 165, 196, 0.18), transparent 22%),
+    linear-gradient(165deg, #27485e, #213e54 68%, #1b3548);
+  color: #eff8fc;
+  box-shadow: 0 24px 44px rgba(25, 48, 66, 0.22);
+}
+
+.hr-context-card .label {
+  background: rgba(255, 255, 255, 0.14);
+  color: #eff8fc;
+}
+
+.hr-context-card h3,
+.hr-context-card p,
+.hr-context-card span,
+.hr-context-card strong {
+  color: inherit;
+}
+
+.hr-metrics {
+  margin-top: 1rem;
+}
+
+.hr-metrics div {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lens-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.lens-tab {
+  border: 1px solid rgba(32, 49, 60, 0.1);
+  background: rgba(255, 255, 255, 0.76);
+  border-radius: 999px;
+  padding: 0.85rem 1.1rem;
+  font-weight: 800;
+  color: #2a4250;
+  cursor: pointer;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+
+.lens-tab.active {
+  color: #fff;
+  border-color: rgba(42, 63, 212, 0.2);
+  background: linear-gradient(135deg, #2a3fd4, #2aa9c2);
+  box-shadow: 0 14px 28px rgba(42, 63, 212, 0.22);
+}
+
+.hr-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: 1rem;
+}
+
+.decision-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.decision-card {
+  padding: 1.1rem;
+  border-radius: 22px;
+  border: 1px solid rgba(32, 49, 60, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(246, 249, 252, 0.96));
+}
+
+.decision-card strong {
+  display: block;
+  margin-top: 0.45rem;
+  line-height: 1.35;
+  color: #223847;
+}
+
+.decision-card.accent {
+  background: linear-gradient(180deg, rgba(42, 63, 212, 0.08), rgba(255, 255, 255, 0.96));
+  border-color: rgba(42, 63, 212, 0.18);
+}
+
+.status-good {
+  border-color: rgba(108, 160, 110, 0.28);
+  background: linear-gradient(180deg, rgba(108, 160, 110, 0.1), rgba(255, 255, 255, 0.96));
+}
+
+.status-good strong {
+  color: #2f7b45;
+}
+
+.status-watch {
+  border-color: rgba(215, 162, 51, 0.3);
+  background: linear-gradient(180deg, rgba(215, 162, 51, 0.1), rgba(255, 255, 255, 0.96));
+}
+
+.status-watch strong {
+  color: #a56c08;
+}
+
+.status-alert {
+  border-color: rgba(180, 69, 95, 0.3);
+  background: linear-gradient(180deg, rgba(180, 69, 95, 0.1), rgba(255, 255, 255, 0.96));
+}
+
+.status-alert strong {
+  color: #a33952;
+}
+
+.decision-card.wide {
+  grid-column: span 2;
+}
+
+.compact-overview {
+  gap: 0.85rem;
+}
+
+.compact-overview .candidate-overview-card {
+  min-height: 110px;
+}
+
+.compact-overview strong {
+  font-size: 1.35rem;
+}
+
+.compact-assessments {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.compact-assessments .assessment-card h4 {
+  margin: 0.45rem 0 0;
+}
+
+.compact-timeline {
+  margin-top: 0.2rem;
+}
+
+.compact-timeline .timeline-item {
+  grid-template-columns: 1.5rem 1fr;
+}
+
+.pillar-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.pillar-mini {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 20px;
+  border: 1px solid rgba(32, 49, 60, 0.08);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.pillar-mini strong {
+  color: #223847;
+}
+
+.pillar-mini span {
+  color: #5f7686;
+  line-height: 1.5;
+}
+
+@media (max-width: 1100px) {
+  .hr-hero,
+  .hr-grid,
+  .decision-grid,
+  .pillar-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .decision-card.wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .hr-hero {
+    padding: 1.35rem;
+  }
+
+  .compact-assessments {
+    grid-template-columns: 1fr;
+  }
+}

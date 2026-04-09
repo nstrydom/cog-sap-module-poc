@@ -1,107 +1,239 @@
-<section class="page">
-  <div class="hero split-panel">
-    <div>
+<section class="page workflow-page">
+  <div class="hero split-panel workflow-hero">
+    <div class="workflow-hero-copy">
       <p class="eyebrow">Workflow View</p>
-      <h2>This is a decision system embedded inside SAP</h2>
+      <h2>SAP To Cognadev To SAP</h2>
       <p class="lede">
-        Show how capability requirements are defined in SAP, how Cognadev evaluates the decision,
-        and how the predicted outcome returns into the operating workflow.
+        Select a scenario and click each workflow step to inspect the decision being made, the data
+        informing it, and the predicted outcome.
       </p>
-      <div class="button-row">
+      <div class="button-row top-gap-sm">
         <button class="btn btn-primary" (click)="launchWorkflow()">Open HR Director View</button>
       </div>
     </div>
 
-    <div class="hero-card">
-      <span class="label">Business question</span>
-      <h3>Can I act on it through SAP and the talent system?</h3>
-      <p>Every step below shows the decision being made, the data informing it, and the predicted outcome.</p>
-      <div class="metric-strip">
+    <div class="hero-card workflow-context-card">
+      <span class="label">Active scenario</span>
+      <h3>{{ selectedScenario.title }}</h3>
+      <p>{{ selectedScenario.summary }}</p>
+
+      <div class="metric-strip workflow-metrics">
         <div>
           <strong>S/4HANA</strong>
-          <span>Execution context and role trigger</span>
-        </div>
-        <div>
-          <strong>SuccessFactors</strong>
-          <span>People workflow and decision routing</span>
+          <span>Role created and workflow context</span>
         </div>
         <div>
           <strong>Cognadev</strong>
-          <span>Capability requirement and predicted outcome</span>
+          <span>Capability requirement and assessment flow</span>
+        </div>
+        <div>
+          <strong>SuccessFactors</strong>
+          <span>Decision returned into talent workflow</span>
         </div>
       </div>
     </div>
   </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Scenario Selector</p>
+        <h3>Working Examples</h3>
+      </div>
+      <p class="muted">Three example scenarios using the same workflow with different decision contexts.</p>
+    </div>
+
+    <div class="scenario-grid top-gap-sm">
+      <button
+        class="scenario-card"
+        *ngFor="let scenario of scenarios"
+        [class.active]="scenario.key === selectedScenarioKey"
+        type="button"
+        (click)="selectScenario(scenario.key)"
+      >
+        <span class="framework-label">{{ scenario.title }}</span>
+        <p>{{ scenario.summary }}</p>
+      </button>
+    </div>
+  </article>
 
   <div class="card-grid top-gap">
     <article class="card">
-      <p class="section-kicker">Workflow 1: SAP → Cognadev</p>
-      <h3>Decision point: defining capability requirement</h3>
-      <p class="muted">The workflow starts with a business need, not an assessment.</p>
-      <dl class="detail-list">
-        <div><dt>Business decision</dt><dd>Define the role needed to execute strategy</dd></div>
-        <div><dt>Workflow context</dt><dd>{{ demo.request.vacancy }} · {{ demo.request.businessUnit }}</dd></div>
-        <div><dt>SAP connection</dt><dd>{{ demo.request.sapModule }}</dd></div>
-        <div><dt>Data informing the decision</dt><dd>Role context, business unit demand, decision rights, and workflow metadata</dd></div>
-        <div><dt>Predicted outcome</dt><dd>Correct capability requirement before hiring or promotion starts</dd></div>
-      </dl>
-      <div class="candidate-selector top-gap">
-        <label class="selector-label" for="candidate-select">Requested individual</label>
-        <select
-          id="candidate-select"
-          class="selector-input"
-          [ngModel]="demo.selectedCandidateKey"
-          (ngModelChange)="demo.setSelectedCandidate($event)"
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Workflow 1</p>
+          <h3>SAP → Cognadev</h3>
+        </div>
+        <p class="muted">Decision point: defining capability requirement</p>
+      </div>
+
+      <div class="workflow-stage-list top-gap-sm">
+        <button
+          class="workflow-stage"
+          *ngFor="let stage of workflowOneStages"
+          [class.active]="stage.key === selectedStageKey"
+          type="button"
+          (click)="selectStage(stage.key)"
         >
-          <option *ngFor="let option of demo.candidateOptions" [ngValue]="option.key">
-            {{ option.label }}
-          </option>
-        </select>
-        <small>The selected profile will drive the HR Director and Enterprise Reporting views.</small>
+          <span class="framework-label">{{ stage.subtitle }}</span>
+          <strong>{{ stage.title }}</strong>
+        </button>
       </div>
     </article>
 
     <article class="card">
-      <p class="section-kicker">Workflow 2: Cognadev → SAP</p>
-      <h3>Decision point: hire / promote / develop</h3>
-      <div class="chip-row">
-        <span class="chip chip-blue">Results returned</span>
-        <span class="chip chip-gold">Fit score calculated</span>
-        <span class="chip chip-green">Embedded into SAP workflow</span>
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Workflow 2</p>
+          <h3>Cognadev → SAP</h3>
+        </div>
+        <p class="muted">Decision point: hire / promote / develop</p>
       </div>
-      <p class="muted">
-        Cognadev returns decision-ready evidence into SAP so the manager is not reading tool output.
-        They are acting on a predicted business outcome.
-      </p>
-      <dl class="detail-list top-gap-sm">
-        <div><dt>Decision being made</dt><dd>Hire, promote, develop, or redesign the role</dd></div>
-        <div><dt>Data informing it</dt><dd>Cognitive match, motivation, values, fragility, and role complexity</dd></div>
-        <div><dt>Predicted outcome</dt><dd>Expected success, risk level, and development path inside SAP</dd></div>
-      </dl>
+
+      <div class="workflow-stage-list top-gap-sm">
+        <button
+          class="workflow-stage"
+          *ngFor="let stage of workflowTwoStages"
+          [class.active]="stage.key === selectedStageKey"
+          type="button"
+          (click)="selectStage(stage.key)"
+        >
+          <span class="framework-label">{{ stage.subtitle }}</span>
+          <strong>{{ stage.title }}</strong>
+        </button>
+      </div>
     </article>
   </div>
 
-  <section class="dashboard-shell top-gap">
-    <div class="stats-row">
-      <article class="stat-card" *ngFor="let metric of demo.intelligenceMetrics" [ngClass]="metric.tone">
-        <strong>{{ metric.value }}</strong>
-        <span>{{ metric.label }}</span>
-        <small class="metric-note">{{ metric.detail }}</small>
-      </article>
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Selected Step</p>
+        <h3>{{ selectedStage.title }}</h3>
+      </div>
+      <p class="muted">{{ selectedStage.subtitle }}</p>
     </div>
 
-    <article class="card">
-      <p class="section-kicker">Decision flow through SAP</p>
-      <h3>Board to role to individual in one connected operating flow</h3>
-      <p class="muted">The workflow exists to improve the business decision, not to showcase separate modules.</p>
-      <div class="solution-grid lifecycle-grid">
-        <div class="solution-tile" *ngFor="let stage of demo.lifecycleStages" [class.active]="stage.active">
-          <div>
-            <strong>{{ stage.name }}</strong>
-            <p>{{ stage.caption }}</p>
-          </div>
+    <div class="decision-detail-grid top-gap-sm">
+      <div class="decision-detail-card">
+        <span class="framework-label">What decision is being made</span>
+        <p>{{ selectedStage.decision }}</p>
+      </div>
+      <div class="decision-detail-card">
+        <span class="framework-label">What data informs it</span>
+        <p>{{ selectedStage.data }}</p>
+      </div>
+      <div class="decision-detail-card accent">
+        <span class="framework-label">What the predicted outcome is</span>
+        <p>{{ selectedStage.predictedOutcome }}</p>
+      </div>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Live Context</p>
+        <h3>Selected Individual And Workflow Inputs</h3>
+      </div>
+    </div>
+
+    <div class="card-grid top-gap-sm">
+      <div class="workflow-input-card">
+        <span class="framework-label">Role context</span>
+        <strong>{{ demo.request.vacancy }}</strong>
+        <p>{{ demo.request.businessUnit }} · {{ demo.request.sapModule }}</p>
+      </div>
+      <div class="workflow-input-card">
+        <span class="framework-label">Requested individual</span>
+        <div class="candidate-selector top-gap-sm">
+          <label class="selector-label" for="candidate-select">Selected profile</label>
+          <select
+            id="candidate-select"
+            class="selector-input"
+            [ngModel]="demo.selectedCandidateKey"
+            (ngModelChange)="demo.setSelectedCandidate($event)"
+          >
+            <option *ngFor="let option of demo.candidateOptions" [ngValue]="option.key">
+              {{ option.label }}
+            </option>
+          </select>
         </div>
       </div>
+    </div>
+  </article>
+
+  <div class="card-grid top-gap">
+    <article class="card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Selected Individual</p>
+          <h3>{{ profile.name }}</h3>
+        </div>
+        <p class="muted risk-text" [ngClass]="getRiskClass(recommendation.risk)">{{ recommendation.status }} · {{ recommendation.readiness }} · {{ recommendation.risk }} risk</p>
+      </div>
+
+      <div class="candidate-overview-grid compact-overview top-gap-sm">
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.fit }}%</strong>
+          <span>Fit score</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.culture }}%</strong>
+          <span>Values alignment</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.teamImpact }}</strong>
+          <span>Team impact</span>
+        </div>
+        <div class="candidate-overview-card active">
+          <strong>{{ recommendation.confidenceModel }}</strong>
+          <span>Prediction model</span>
+        </div>
+      </div>
+
+      <p class="lede small top-gap-sm">{{ recommendation.summary }}</p>
     </article>
-  </section>
+
+    <article class="card">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Report Links</p>
+          <h3>Evidence Used In The Workflow</h3>
+        </div>
+      </div>
+
+      <div class="report-link-list top-gap-sm">
+        <a
+          class="report-link"
+          *ngFor="let document of reportLinks"
+          [href]="document.path"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {{ document.label }}
+        </a>
+      </div>
+    </article>
+  </div>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">Workflow Timeline</p>
+        <h3>How This Selected Individual Moved Through The Flow</h3>
+      </div>
+    </div>
+
+    <div class="timeline compact-timeline">
+      <div class="timeline-item" *ngFor="let item of timeline">
+        <span class="timeline-dot"></span>
+        <div>
+          <h4>{{ item.title }}</h4>
+          <small>{{ item.time }}</small>
+          <p>{{ item.detail }}</p>
+        </div>
+      </div>
+    </div>
+  </article>
 </section>

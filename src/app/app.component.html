@@ -5,10 +5,10 @@
       <h1>Predictive Enterprise Performance</h1>
     </div>
     <nav>
-      <a routerLink="/dashboard" routerLinkActive="active">CEO / COO View</a>
-      <a routerLink="/talentlab-summary" routerLinkActive="active">HR Director View</a>
-      <a routerLink="/sap-request" routerLinkActive="active">Workflow</a>
-      <a routerLink="/sap-results" routerLinkActive="active">Enterprise Reporting</a>
+      <button type="button" routerLink="/dashboard" routerLinkActive="active" (click)="navigate('/dashboard')">CEO / COO View</button>
+      <button type="button" routerLink="/talentlab-summary" routerLinkActive="active" (click)="navigate('/talentlab-summary')">HR Director View</button>
+      <button type="button" routerLink="/sap-request" routerLinkActive="active" (click)="navigate('/sap-request')">Workflow</button>
+      <button type="button" routerLink="/sap-results" routerLinkActive="active" (click)="navigate('/sap-results')">Enterprise Reporting</button>
     </nav>
   </header>
 
