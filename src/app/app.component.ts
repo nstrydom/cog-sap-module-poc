@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   standalone: false
 })
 export class AppComponent {
-  title = 'Cognadev TalentLab';
+  title = 'Cognadev SAP Prediction Engine';
 }

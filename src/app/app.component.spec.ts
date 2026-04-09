@@ -20,9 +20,9 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'talentlab-poc'`, () => {
+  it(`should have as title 'Cognadev SAP Prediction Engine'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('Cognadev TalentLab POC');
+    expect(app.title).toEqual('Cognadev SAP Prediction Engine');
   });
 });
