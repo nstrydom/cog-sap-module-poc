@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { DemoStateService } from '../demo-state.service';
+
 type SignalSeverity = 'high' | 'medium' | 'low';
 
 interface JourneyMetric {
@@ -494,6 +496,8 @@ export class EnterpriseDashboardComponent {
 
   selectedScenarioKey = 'commercial-scale-up';
   selectedOutcomeKey = 'economic-engine';
+
+  constructor(public demo: DemoStateService) {}
 
   get selectedScenario(): Scenario {
     return this.scenarios.find((scenario) => scenario.key === this.selectedScenarioKey) ?? this.scenarios[0];

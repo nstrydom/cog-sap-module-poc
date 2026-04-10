@@ -166,6 +166,40 @@
   <article class="card top-gap">
     <div class="section-heading">
       <div>
+        <p class="section-kicker">Enterprise Heatmap</p>
+        <h3>Seven Thematic Dimensions Across Business Units</h3>
+      </div>
+      <p class="muted">Overall organisational view for the CEO / COO landing layer.</p>
+    </div>
+
+    <div class="enterprise-table-wrap top-gap-sm">
+      <table class="enterprise-table">
+        <thead>
+          <tr>
+            <th>Business Unit</th>
+            <th *ngFor="let dimension of demo.enterpriseDimensions">{{ dimension.label }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of demo.enterpriseHeatmap">
+            <td>
+              <strong>{{ row.businessUnit }}</strong>
+              <p>{{ row.summary }}</p>
+            </td>
+            <td *ngFor="let dimension of demo.enterpriseDimensions">
+              <span class="heat-cell" [ngClass]="demo.getHeatClass(row.scores[dimension.key])">
+                {{ row.scores[dimension.key] }}%
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <article class="card top-gap">
+    <div class="section-heading">
+      <div>
         <p class="section-kicker">C. Human Capability</p>
         <h3>Driver Layer</h3>
       </div>
